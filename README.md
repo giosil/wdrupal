@@ -3,6 +3,7 @@
 Dew Drupal modules collection
 
 - olm: OpenLayers Module
+- wux: WUX Module (Bootstrap theme required)
 
 ## Test
 

@@ -1,0 +1,7 @@
+wux.content:
+  path: '/wux/index'
+  defaults:
+    _controller: '\Drupal\wux\Controller\WUXController::content'
+    _title: 'WUX'
+  requirements: 
+    _permission: 'access content'

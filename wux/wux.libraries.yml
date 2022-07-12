@@ -1,0 +1,39 @@
+wux:
+  version: 1.0
+  css:
+    base:
+      font-awesome/css/font-awesome.min.css: { preprocess: false }
+      css/plugins/datapicker/datepicker3.css: { preprocess: false }
+      css/plugins/daterangepicker/daterangepicker.min.css: { preprocess: false }
+      css/plugins/sweetalert/sweetalert.css: { preprocess: false }
+      css/plugins/toastr/toastr.min.css: { preprocess: false }
+      devextreme/css/dx.common.css: { preprocess: false }
+      devextreme/css/dx.light.compact.css: { preprocess: false }
+      css/wux.css: { preprocess: false }
+  js:
+    js/base.js: { preprocess: false }
+    js/plugins/wow/wow.min.js: { preprocess: false }
+    js/plugins/sweetalert/sweetalert.min.js: { preprocess: false }
+    js/plugins/toastr/toastr.min.js: { preprocess: false }
+    js/plugins/moment/moment.min.js: { preprocess: false }
+    js/plugins/datapicker/bootstrap-datepicker.js: { preprocess: false }
+    js/plugins/datapicker/bootstrap-datepicker.it.js: { preprocess: false }
+    js/plugins/daterangepicker/daterangepicker.min.js: { preprocess: false }
+    js/plugins/filesaver/FileSaver.min.js: { preprocess: false }
+    cldr/cldr.min.js: { preprocess: false }
+    cldr/cldr/event.min.js: { preprocess: false }
+    cldr/cldr/supplemental.min.js: { preprocess: false }
+    cldr/cldr/unresolved.min.js: { preprocess: false }
+    globalize/globalize.min.js: { preprocess: false }
+    globalize/globalize/message.min.js: { preprocess: false }
+    globalize/globalize/number.min.js: { preprocess: false }
+    globalize/globalize/date.min.js: { preprocess: false }
+    globalize/globalize/currency.min.js: { preprocess: false }
+    devextreme/js/jszip.min.js: { preprocess: false }
+    devextreme/js/dx.web.js: { preprocess: false }
+    devextreme/dx.messages.it.min.js: { preprocess: false }
+    js/main.js: { preprocess: false }
+    wux/js/wux.min.js: { preprocess: false }
+  dependencies:
+    - core/jquery
+    - core/jquery.ui

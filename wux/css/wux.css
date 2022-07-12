@@ -1,0 +1,72 @@
+.container{
+width:75% !important;
+}
+.navbar.container {
+max-width:75% !important;
+}
+.waitpls {
+display:none;
+position:fixed;
+z-index:1000;
+top:0;
+left:0;
+height:100%;
+width:100%;
+background:rgba(255,255,255,.8) url('img/wait.gif') 50% 50% no-repeat;
+}
+body.loading .waitpls {
+overflow:hidden;
+}
+body.loading .waitpls {
+display:block;
+}
+.table-actions-wrapper{
+margin-top:-10px
+}
+.table-actions-wrapper .table-actions{
+padding:12px 0 10px 0
+}
+.table-actions-wrapper .table-actions.stickied-top,.table-actions-wrapper .table-actions.stickied-bottom{
+background:#fff
+}
+.table-actions-wrapper .table-actions .right-actions .btn,.table-actions-wrapper .table-actions .left-actions .btn,.table-actions-wrapper .table-actions .right-actions .input-group,.table-actions-wrapper .table-actions .left-actions .input-group,.table-actions-wrapper .table-actions .right-actions .form-group,.table-actions-wrapper .table-actions .left-actions .form-group{
+float:left
+}
+.table-actions-wrapper .table-actions .right-actions .btn+.btn,.table-actions-wrapper .table-actions .left-actions .btn+.btn,.table-actions-wrapper .table-actions .right-actions .input-group+.btn,.table-actions-wrapper .table-actions .left-actions .input-group+.btn,.table-actions-wrapper .table-actions .right-actions .form-group+.btn,.table-actions-wrapper .table-actions .left-actions .form-group+.btn{
+margin-left:5px
+}
+.table-actions-wrapper .table-actions .right-actions .input-group,.table-actions-wrapper .table-actions .left-actions .input-group{
+width:200px
+}
+.table-actions-wrapper .table-actions .right-actions .form-group,.table-actions-wrapper .table-actions .left-actions .form-group{
+margin-bottom:0
+}
+.table-actions-wrapper .table-actions .right-actions{
+float:right
+}
+.table-actions-wrapper .table-actions .left-actions{
+float:left;
+position:relative;
+padding-left:40px
+}
+.table-actions-wrapper .table-actions .left-actions:before{
+position:absolute;
+left:0;
+font-family:"FontAwesome";
+font-size:20px;
+content:"\f149";
+color:#c2c2c2;
+transform:rotate(-90deg);
+display:inline-block;
+margin:0 10px 0 15px;
+top:2px
+}
+.table-actions-wrapper .table-actions .left-actions .selected-row-number{
+display:none;
+padding-left:0;
+font-size:11px;
+cursor:normal
+}
+.table-actions-wrapper .table-actions .left-actions .selected-row-number>span{
+font-weight:600
+}

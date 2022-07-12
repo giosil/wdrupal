@@ -1,0 +1,10 @@
+<?php
+
+function wux_preprocess_page(&$variables) {
+  $req_uri = \Drupal::request()->getRequestUri();
+  if (str_starts_with($req_uri, '/wux/')) {
+    $variables['#attached']['library'][] = 'wux/wux';
+  }
+}
+
+?>
