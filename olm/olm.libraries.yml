@@ -1,0 +1,11 @@
+olm-ui:
+  version: 1.0
+  css:
+    base:
+      css/ol.css: { preprocess: false }
+      css/main.css: { preprocess: false }
+  js:
+    js/ol.js: { preprocess: false }
+    js/main.js: { preprocess: false }
+  dependencies:
+    - core/jquery

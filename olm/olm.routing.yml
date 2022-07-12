@@ -1,0 +1,15 @@
+olm.content:
+  path: '/olm/index'
+  defaults:
+    _controller: '\Drupal\olm\Controller\OLMController::content'
+    _title: 'Dew OpenLayers Module'
+  requirements: 
+    _permission: 'access content'
+
+olm.rss:
+  path: '/olm/rss' 
+  defaults: 
+    _controller: '\Drupal\olm\Controller\OLMController::rss'
+  requirements: 
+    _permission: 'access content'
+
