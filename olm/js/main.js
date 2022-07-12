@@ -1,5 +1,7 @@
 var $ = jQuery.noConflict();
 
+var imgPath = '/modules/olm/img/';
+
 var map = new ol.Map({
     target: 'olm-map',
     layers: [
@@ -56,7 +58,7 @@ function addMarkers() {
             anchor: [0.5, 46],
             anchorXUnits: 'fraction',
             anchorYUnits: 'pixels',
-            src: '/modules/olm/img/marker-blue.png',
+            src: imgPath + 'marker-blue.png',
             scale: 0.6,
         })
     }));
@@ -65,7 +67,7 @@ function addMarkers() {
             anchor: [0.5, 46],
             anchorXUnits: 'fraction',
             anchorYUnits: 'pixels',
-            src: '/modules/olm/img/marker-red.png',
+            src: imgPath + 'marker-red.png',
             scale: 0.6,
         })
     }));
