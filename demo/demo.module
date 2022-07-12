@@ -1,0 +1,12 @@
+<?php
+
+function demo_preprocess_page(&$variables) {
+  
+  $req_uri = \Drupal::request()->getRequestUri();
+  if (str_starts_with($req_uri, '/demo/')) {
+    $variables['#attached']['library'][] = 'demo/demo-ui';
+  }
+
+}
+
+?>

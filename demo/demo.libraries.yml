@@ -1,0 +1,7 @@
+demo-ui:
+  version: 1.0
+  js:
+    js/demo.min.js: { preprocess: false }
+    js/main/main.js: { preprocess: false }
+  dependencies:
+    - wux/wux
