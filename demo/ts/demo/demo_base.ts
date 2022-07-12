@@ -8,6 +8,9 @@ namespace GUI {
 		if(WUtil.ends(l, 'index')) {
 			return new GUIDemo();
 		}
+		else if(WUtil.ends(l, 'map')) {
+			return new GUIMap();
+		}
 
 		return new GUIDemo();
 	}

@@ -1,6 +1,10 @@
 demo-ui:
   version: 1.0
+  css:
+    base:
+      css/ol.css: { preprocess: false }  
   js:
+    js/ext/ol.js: { preprocess: false }
     js/demo.min.js: { preprocess: false }
     js/main/main.js: { preprocess: false }
   dependencies:

@@ -5,3 +5,11 @@ demo.content:
     _title: 'Demo'
   requirements: 
     _permission: 'access content'
+
+demo.map:
+  path: '/demo/map'
+  defaults:
+    _controller: '\Drupal\demo\Controller\DEMOController::content'
+    _title: 'Demo Map'
+  requirements: 
+    _permission: 'access content'
