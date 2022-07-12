@@ -3,13 +3,13 @@
 Dew Drupal modules collection
 
 - olm: OpenLayers module
-	- http://host:port/olm/index (Example of OpenLayers Map)
-	- http://host:port/olm/rss (Example of service proxy)
+	- http://localhost:8090/olm/index (Example of OpenLayers Map)
+	- http://localhost:8090/olm/rss (Example of service proxy)
 - wux: WUX module (Bootstrap theme required)
-	- http://host:port/wux/index (Library)
+	- http://localhost:8090/wux/index (Library)
 - demo: Demo WUX GUI (WUX module required)
-	- http://host:port/demo/index (Example of WUX GUI) 
-	- http://host:port/demo/map (Example of WUX OpenLayers Component)
+	- http://localhost:8090/demo/index (Example of WUX GUI) 
+	- http://localhost:8090/demo/map (Example of WUX OpenLayers Component)
 
 ## Test
 
