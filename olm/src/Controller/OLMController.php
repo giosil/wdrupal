@@ -8,9 +8,18 @@ use Symfony\Component\HttpFoundation\Response;
 class OLMController {
   
   public function content() {
-    $div_links = '<div><a id="lnk-c" class="olm-links">Clear</a> | <a id="lnk-m" class="olm-links">Markers</a> | <a id="lnk-p" class="olm-links">Polygon</a></div>';
+    $lnk_c = '<a id="lnk-c" class="olm-links">Clear</a>';
+    $lnk_m = '<a id="lnk-m" class="olm-links">Markers</a>';
+    $lnk_p = '<a id="lnk-p" class="olm-links">Polygon</a>';
+    $lnk_z = '<a id="lnk-z" class="olm-links">Zoom</a>';
+    $div_links = '<div>' . $lnk_c . ' | ' . $lnk_m . ' | ' . $lnk_p . ' | ' . $lnk_z . '</div>';
+
+    $div_map = '<div id="olm-map"></div>';
+
+    $span_out = 'Feature name: <span id="lbl-out" class="olm-label"></span>';
+
     return array(
-      '#markup' => $div_links . '<hr><div id="olm-map"></div><hr>Feature name: <span id="lbl-out" class="olm-label"></span>'
+      '#markup' => $div_links . '<hr>' . $div_map . '<hr>' . $span_out
     );
   }
 

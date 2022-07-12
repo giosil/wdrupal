@@ -2,6 +2,11 @@ var $ = jQuery.noConflict();
 
 var imgPath = '/modules/olm/img/';
 
+var view = new ol.View({
+  center: ol.proj.fromLonLat([12.4846, 41.8977]),
+  zoom: 9
+});
+
 var map = new ol.Map({
   target: 'olm-map',
   layers: [
@@ -9,10 +14,7 @@ var map = new ol.Map({
       source: new ol.source.OSM()
     })
   ],
-  view: new ol.View({
-    center: ol.proj.fromLonLat([12.4846, 41.8977]),
-    zoom: 9
-  })
+  view: view
 });
 map.on('click', function(e) {
   var f = map.forEachFeatureAtPixel(e.pixel, function(feature) { return feature; });
@@ -36,6 +38,8 @@ var vectorPolygon;
 $("#lnk-c").click(function() {
   removeMarkes();
   removePolygon();
+  view.setCenter(ol.proj.fromLonLat([12.4846, 41.8977]));
+  view.setZoom(9);
 });
 $("#lnk-m").click(function() {
   removeMarkes();
@@ -44,6 +48,10 @@ $("#lnk-m").click(function() {
 $("#lnk-p").click(function() {
   removePolygon();
   addPolygon();
+});
+$("#lnk-z").click(function() {
+  view.setCenter(ol.proj.fromLonLat([12.2497, 41.7981]));
+  view.setZoom(16);
 });
 
 function removeMarkes() {
