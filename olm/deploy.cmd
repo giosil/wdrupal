@@ -1,6 +1,6 @@
 @echo off
 
-set DRUPAL_CONT_NAME=dew-drupal
+set DRUPAL_CONT_NAME=sira-drupal
 
 cd ..
 

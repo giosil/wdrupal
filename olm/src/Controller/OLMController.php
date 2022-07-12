@@ -10,7 +10,7 @@ class OLMController {
   public function content() {
     $div_links = '<div><a id="lnk-c" class="olm-links">Clear</a> | <a id="lnk-m" class="olm-links">Markers</a> | <a id="lnk-p" class="olm-links">Polygon</a></div>';
     return array(
-      '#markup' => $div_links . '<hr><div id="olm-map"></div>'
+      '#markup' => $div_links . '<hr><div id="olm-map"></div><hr>Feature name: <span id="lbl-out" class="olm-label"></span>'
     );
   }
 

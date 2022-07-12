@@ -5,3 +5,6 @@
 .olm-links{
     cursor: pointer;
 }
+.olm-label{
+    font-weight: bold;
+}
