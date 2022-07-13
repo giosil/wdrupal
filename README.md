@@ -1,6 +1,6 @@
 # WDrupal 
 
-Dew Drupal modules collection
+Drupal modules collection
 
 - olm: OpenLayers module
 	- http://localhost:8090/olm/index (Example of OpenLayers Map)
