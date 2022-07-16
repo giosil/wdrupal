@@ -1,10 +1,4 @@
-.container{
-width:75% !important;
-}
-.navbar.container {
-max-width:75% !important;
-}
-.waitpls {
+.waitpls{
 display:none;
 position:fixed;
 z-index:1000;
@@ -14,10 +8,10 @@ height:100%;
 width:100%;
 background:rgba(255,255,255,.8) url('img/wait.gif') 50% 50% no-repeat;
 }
-body.loading .waitpls {
+body.loading .waitpls{
 overflow:hidden;
 }
-body.loading .waitpls {
+body.loading .waitpls{
 display:block;
 }
 .table-actions-wrapper{
