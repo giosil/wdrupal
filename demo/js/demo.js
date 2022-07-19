@@ -417,6 +417,12 @@ var GUI;
                 center: ol.proj.fromLonLat([this._cfg.lon, this._cfg.lat]),
                 zoom: this._cfg.zoom
             });
+            if (this._cfg.controls) {
+                this.controls = ol.control.defaults(this._cfg.controls);
+            }
+            if (this._cfg.interactions) {
+                this.interactions = ol.interaction.defaults(this._cfg.interactions);
+            }
             this.map = new ol.Map({
                 target: this.id,
                 layers: [
@@ -424,7 +430,9 @@ var GUI;
                         source: new ol.source.OSM()
                     })
                 ],
-                view: this.view
+                view: this.view,
+                controls: this.controls,
+                interactions: this.interactions
             });
             this.$popup = $('#' + this.subId('man-popup'));
             if (!this.$popup.length) {

@@ -35,16 +35,34 @@ declare namespace GUI {
     }
 }
 declare namespace GUI {
+    export interface OLMapCon {
+        attribution?: boolean;
+        zoom?: boolean;
+    }
+    export interface OLMapInt {
+        doubleClickZoom?: boolean;
+        dragAndDrop?: boolean;
+        dragPan?: boolean;
+        keyboardPan?: boolean;
+        keyboardZoom?: boolean;
+        mouseWheelZoom?: boolean;
+        pointer?: boolean;
+        select?: boolean;
+    }
     export interface OLMapCfg {
         lon?: number;
         lat?: number;
         zoom?: number;
+        controls?: OLMapCon;
+        interactions?: OLMapInt;
     }
     type OLMarkerColor = 'blue' | 'green' | 'orange' | 'purple' | 'red' | 'yellow';
     export class OLMap extends WUX.WComponent<any, string> {
         _cfg: OLMapCfg;
         map: ol.Map;
         view: ol.View;
+        controls: ol.Collection<ol.control.Control>;
+        interactions: ol.Collection<ol.interaction.Interaction>;
         markers: any[][];
         mrkSrc: ol.source.Vector;
         mrkLay: ol.layer.Vector;

@@ -2,10 +2,28 @@ namespace GUI {
 
 	import WUtil = WUX.WUtil;
 
+	export interface OLMapCon {
+		attribution?: boolean;
+		zoom?: boolean;
+	}
+
+	export interface OLMapInt {
+		doubleClickZoom?: boolean;
+		dragAndDrop?: boolean;
+		dragPan?: boolean;
+		keyboardPan?: boolean;
+		keyboardZoom?: boolean;
+		mouseWheelZoom?: boolean;
+		pointer?: boolean;
+		select?: boolean;
+	}
+
 	export interface OLMapCfg {
 		lon?: number;
 		lat?: number;
 		zoom?: number;
+		controls?: OLMapCon;
+		interactions?: OLMapInt;
 	}
 
 	type OLMarkerColor = 'blue' | 'green' | 'orange' | 'purple' | 'red' | 'yellow';
@@ -15,6 +33,8 @@ namespace GUI {
 
 		map: ol.Map;
 		view: ol.View;
+		controls: ol.Collection<ol.control.Control>;
+		interactions: ol.Collection<ol.interaction.Interaction>;
 
 		markers: any[][];
 		mrkSrc: ol.source.Vector;
@@ -217,6 +237,12 @@ namespace GUI {
 				center: ol.proj.fromLonLat([this._cfg.lon, this._cfg.lat]),
 				zoom: this._cfg.zoom
 			});
+			if(this._cfg.controls) {
+				this.controls = ol.control.defaults(this._cfg.controls);
+			}
+			if(this._cfg.interactions) {
+				this.interactions = ol.interaction.defaults(this._cfg.interactions);
+			}
 			
 			this.map = new ol.Map({
 				target: this.id,
@@ -225,7 +251,9 @@ namespace GUI {
 						source: new ol.source.OSM()
 					})
 				],
-				view: this.view
+				view: this.view,
+				controls: this.controls,
+				interactions: this.interactions
 			});
 
 			this.$popup = $('#' + this.subId('man-popup'));
