@@ -14,7 +14,21 @@ var map = new ol.Map({
       source: new ol.source.OSM()
     })
   ],
-  view: view
+  view: view,
+  controls: ol.control.defaults({
+    attribution: false,
+    zoom: true,
+  }),
+  interactions: ol.interaction.defaults({
+		doubleClickZoom: false,
+		dragAndDrop: false,
+		dragPan: false,
+		keyboardPan: false,
+		keyboardZoom: false,
+		mouseWheelZoom: false,
+		pointer: false,
+		select: false
+  })
 });
 map.on('click', function(e) {
   var f = map.forEachFeatureAtPixel(e.pixel, function(feature) { return feature; });
