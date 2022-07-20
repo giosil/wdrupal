@@ -20,14 +20,14 @@ var map = new ol.Map({
     zoom: true,
   }),
   interactions: ol.interaction.defaults({
-		doubleClickZoom: false,
-		dragAndDrop: false,
-		dragPan: false,
-		keyboardPan: false,
-		keyboardZoom: false,
-		mouseWheelZoom: false,
-		pointer: false,
-		select: false
+    doubleClickZoom: false,
+    dragAndDrop: false,
+    dragPan: false,
+    keyboardPan: false,
+    keyboardZoom: false,
+    mouseWheelZoom: false,
+    pointer: false,
+    select: false
   })
 });
 map.on('click', function(e) {
