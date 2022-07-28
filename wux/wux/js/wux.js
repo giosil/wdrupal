@@ -4146,7 +4146,7 @@ var WUX;
     var WLabel = (function (_super) {
         __extends(WLabel, _super);
         function WLabel(id, text, icon, classStyle, style, attributes) {
-            var _this = _super.call(this, id, 'WLabel', icon, classStyle, style, attributes) || this;
+            var _this = _super.call(this, id ? id : '*', 'WLabel', icon, classStyle, style, attributes) || this;
             _this.rootTag = 'span';
             _this.updateState(text);
             return _this;
@@ -4474,7 +4474,7 @@ var WUX;
     var WButton = (function (_super) {
         __extends(WButton, _super);
         function WButton(id, text, icon, classStyle, style, attributes, type) {
-            var _this = _super.call(this, id, 'WButton', icon, classStyle, style, attributes) || this;
+            var _this = _super.call(this, id ? id : '*', 'WButton', icon, classStyle, style, attributes) || this;
             _this.updateState(text);
             _this.rootTag = 'button';
             _this.type = type ? type : 'button';
@@ -4528,7 +4528,7 @@ var WUX;
     var WLink = (function (_super) {
         __extends(WLink, _super);
         function WLink(id, text, icon, classStyle, style, attributes, href, target) {
-            var _this = _super.call(this, id, 'WLink', icon, classStyle, style, attributes) || this;
+            var _this = _super.call(this, id ? id : '*', 'WLink', icon, classStyle, style, attributes) || this;
             _this.updateState(text);
             _this.rootTag = 'a';
             _this._href = href;
@@ -4619,7 +4619,7 @@ var WUX;
     var WTab = (function (_super) {
         __extends(WTab, _super);
         function WTab(id, classStyle, style, attributes, props) {
-            var _this = _super.call(this, id, 'WTab', props, classStyle, style, attributes) || this;
+            var _this = _super.call(this, id ? id : '*', 'WTab', props, classStyle, style, attributes) || this;
             _this.tabs = [];
             return _this;
         }
