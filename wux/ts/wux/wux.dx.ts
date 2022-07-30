@@ -518,8 +518,9 @@
             return '';
         }
 
-        getInstance(): DevExpress.ui.dxDataGrid {
+        getInstance(gopt?: DevExpress.ui.dxDataGridOptions): DevExpress.ui.dxDataGrid {
             if (!this.mounted) return null;
+            if(gopt) this.root.dxDataGrid(gopt);
             return this.root.dxDataGrid('instance');
         }
 
@@ -1445,8 +1446,9 @@
             return '';
         }
 
-        getInstance(): DevExpress.ui.dxTreeList {
+        getInstance(gopt?: DevExpress.ui.dxTreeListOptions): DevExpress.ui.dxTreeList {
             if (!this.mounted) return null;
+            if(gopt) this.root.dxTreeList(gopt);
             return this.root.dxTreeList('instance');
         }
 

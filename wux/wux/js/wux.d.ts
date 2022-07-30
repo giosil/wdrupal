@@ -1313,7 +1313,7 @@ declare namespace WUX {
         setColVisible(col: string, vis: boolean): this;
         edit(row: number, col: any, t?: number): this;
         getFilter(key: string): string;
-        getInstance(): DevExpress.ui.dxDataGrid;
+        getInstance(gopt?: DevExpress.ui.dxDataGridOptions): DevExpress.ui.dxDataGrid;
         getSelectedKeys(): any[];
         getSelectedRows(): number[];
         isSelected(data: any): boolean;
@@ -1530,7 +1530,7 @@ declare namespace WUX {
         setColVisible(col: string, vis: boolean): this;
         edit(row: number, col: any, t?: number): this;
         getFilter(key: string): string;
-        getInstance(): DevExpress.ui.dxTreeList;
+        getInstance(gopt?: DevExpress.ui.dxTreeListOptions): DevExpress.ui.dxTreeList;
         getSelectedRows(): number[];
         getSelectedRowsData(): any[];
         getFilteredRowsData(): any[];

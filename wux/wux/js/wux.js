@@ -2608,15 +2608,15 @@ var WUX;
     }
     WUX.getInput = getInput;
     function getPageTitle() {
-        return $('#ptitle');
+        return $('h1.page-header');
     }
     WUX.getPageTitle = getPageTitle;
     function getBreadcrump() {
-        return $('#pbreadcrumb');
+        return $('ol.breadcrumb');
     }
     WUX.getBreadcrump = getBreadcrump;
     function getPageHeader() {
-        return $('#pheader');
+        return $('#navbar');
     }
     WUX.getPageHeader = getPageHeader;
     function getPageFooter() {
@@ -2624,7 +2624,7 @@ var WUX;
     }
     WUX.getPageFooter = getPageFooter;
     function getPageMenu() {
-        return $('#side-menu');
+        return $('#block-bootstrap-main-menu');
     }
     WUX.getPageMenu = getPageMenu;
     function getViewRoot() {
@@ -7475,9 +7475,11 @@ var WUX;
             }
             return '';
         };
-        WDXTable.prototype.getInstance = function () {
+        WDXTable.prototype.getInstance = function (gopt) {
             if (!this.mounted)
                 return null;
+            if (gopt)
+                this.root.dxDataGrid(gopt);
             return this.root.dxDataGrid('instance');
         };
         WDXTable.prototype.getSelectedKeys = function () {
@@ -8371,9 +8373,11 @@ var WUX;
             }
             return '';
         };
-        WDXTreeList.prototype.getInstance = function () {
+        WDXTreeList.prototype.getInstance = function (gopt) {
             if (!this.mounted)
                 return null;
+            if (gopt)
+                this.root.dxTreeList(gopt);
             return this.root.dxTreeList('instance');
         };
         WDXTreeList.prototype.getSelectedRows = function () {

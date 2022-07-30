@@ -125,15 +125,15 @@
     }
 
     export function getPageTitle(): JQuery {
-        return $('#ptitle');
+        return $('h1.page-header');
     }
 
     export function getBreadcrump(): JQuery {
-        return $('#pbreadcrumb');
+        return $('ol.breadcrumb');
     }
 
     export function getPageHeader(): JQuery {
-        return $('#pheader');
+        return $('#navbar');
     }
 
     export function getPageFooter(): JQuery {
@@ -141,7 +141,7 @@
     }
 
     export function getPageMenu(): JQuery {
-        return $('#side-menu');
+        return $('#block-bootstrap-main-menu');
     }
 
     export function getViewRoot(): JQuery {
