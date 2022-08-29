@@ -287,10 +287,13 @@ namespace GUI {
 				}
 			});
 			this.map.on('pointermove', (e: ol.events.Event) => {
+				let x = document.getElementById(this.map.getTarget() as string);
 				var f = this.map.forEachFeatureAtPixel(e.pixel, function(f) { return f; });
 				let m = this.getMarker(f);
+				let c = false;
 				if(m) {
 					let h = m[4];
+					if(m[5]) c = true;
 					if(h) {
 						e["lon"] = m[0];
 						e["lat"] = m[1];
@@ -300,8 +303,10 @@ namespace GUI {
 				let p = this.getPolygon(f);
 				if(p) {
 					let h = p[4];
+					if(p[5]) c = true;
 					if(h) h(e);
 				}
+				x.style.cursor = c ? 'pointer' : '';
 			});
 
 			if(this.markers) {

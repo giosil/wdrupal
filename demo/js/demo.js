@@ -464,10 +464,14 @@ var GUI;
                 }
             });
             this.map.on('pointermove', function (e) {
+                var x = document.getElementById(_this.map.getTarget());
                 var f = _this.map.forEachFeatureAtPixel(e.pixel, function (f) { return f; });
                 var m = _this.getMarker(f);
+                var c = false;
                 if (m) {
                     var h = m[4];
+                    if (m[5])
+                        c = true;
                     if (h) {
                         e["lon"] = m[0];
                         e["lat"] = m[1];
@@ -477,9 +481,12 @@ var GUI;
                 var p = _this.getPolygon(f);
                 if (p) {
                     var h = p[4];
+                    if (p[5])
+                        c = true;
                     if (h)
                         h(e);
                 }
+                x.style.cursor = c ? 'pointer' : '';
             });
             if (this.markers) {
                 for (var _i = 0, _a = this.markers; _i < _a.length; _i++) {
