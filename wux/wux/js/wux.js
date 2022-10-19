@@ -3039,17 +3039,20 @@ var WUX;
         BTN["SM_DEFAULT"] = "btn btn-sm btn-default btn-block";
         BTN["SM_SECONDARY"] = "btn btn-sm btn-secondary btn-block";
         BTN["SM_INFO"] = "btn btn-sm btn-info btn-block";
+        BTN["SM_WARNING"] = "btn btn-sm btn-warning btn-block";
         BTN["SM_DANGER"] = "btn btn-sm btn-danger btn-block";
         BTN["SM_WHITE"] = "btn btn-sm btn-white btn-block";
         BTN["ACT_PRIMARY"] = "btn btn-sm btn-primary";
         BTN["ACT_DEFAULT"] = "btn btn-sm btn-default";
         BTN["ACT_SECONDARY"] = "btn btn-sm btn-secondary";
         BTN["ACT_INFO"] = "btn btn-sm btn-info";
+        BTN["ACT_WARNING"] = "btn btn-sm btn-warning";
         BTN["ACT_DANGER"] = "btn btn-sm btn-danger";
         BTN["ACT_WHITE"] = "btn btn-sm btn-white";
         BTN["ACT_OUTLINE_PRIMARY"] = "btn btn-sm btn-primary btn-outline";
         BTN["ACT_OUTLINE_DEFAULT"] = "btn btn-sm btn-default btn-outline";
         BTN["ACT_OUTLINE_INFO"] = "btn btn-sm btn-info btn-outline";
+        BTN["ACT_OUTLINE_WARNING"] = "btn btn-sm btn-warning btn-outline";
         BTN["ACT_OUTLINE_DANGER"] = "btn btn-sm btn-danger btn-outline";
     })(BTN = WUX.BTN || (WUX.BTN = {}));
     var ATT = (function () {
@@ -6036,7 +6039,18 @@ var WUX;
                             f.element = $(dr);
                             break;
                         case WUX.WInputType.CheckBox:
-                            f.element = $('<input type="checkbox" name="' + f.id + '" id="' + f.id + '" class="' + this.inputClass + '" style="height:16px" />');
+                            if (!this.checkboxStyle) {
+                                var ch = Math.round(0.8 * parseInt(this.root.css('font-size')));
+                                if (isNaN(ch) || ch < 16)
+                                    ch = 16;
+                                this.checkboxStyle = 'height:' + ch + 'px;';
+                            }
+                            if (this.checkboxStyle.length > 2) {
+                                f.element = $('<input type="checkbox" name="' + f.id + '" id="' + f.id + '" class="' + this.inputClass + '" style="' + this.checkboxStyle + '"/>');
+                            }
+                            else {
+                                f.element = $('<input type="checkbox" name="' + f.id + '" id="' + f.id + '" class="' + this.inputClass + '"/>');
+                            }
                             break;
                         case WUX.WInputType.Radio:
                             if (f.component)
@@ -9175,6 +9189,13 @@ var WUX;
         function WDxTreeView(id) {
             return _super.call(this, id ? id : '*', 'WDxTreeView') || this;
         }
+        WDxTreeView.prototype.getInstance = function (opt) {
+            if (!this.mounted)
+                return null;
+            if (opt)
+                this.root.dxTreeView(opt);
+            return this.root.dxTreeView('instance');
+        };
         WDxTreeView.prototype.onItemClick = function (h) {
             this.handlers['_onItemClick'] = [h];
             if (this.mounted) {
@@ -9189,6 +9210,15 @@ var WUX;
             if (this.mounted) {
                 var opt = {
                     onSelectionChanged: h
+                };
+                this.root.dxTreeView(opt);
+            }
+        };
+        WDxTreeView.prototype.onItemRendered = function (h) {
+            this.handlers['_onItemRendered'] = [h];
+            if (this.mounted) {
+                var opt = {
+                    onItemRendered: h
                 };
                 this.root.dxTreeView(opt);
             }
@@ -9210,6 +9240,8 @@ var WUX;
                 opt.onItemClick = null;
             if (events.indexOf('_onSelectionChanged') >= 0)
                 opt.onSelectionChanged = null;
+            if (events.indexOf('_onItemRendered') >= 0)
+                opt.onItemRendered = null;
             this.root.dxTreeView(opt);
             return this;
         };
@@ -9248,6 +9280,9 @@ var WUX;
             }
             if (this.handlers['_onSelectionChanged'] && this.handlers['_onSelectionChanged'].length) {
                 opt.onSelectionChanged = this.handlers['_onSelectionChanged'][0];
+            }
+            if (this.handlers['_onItemRendered'] && this.handlers['_onItemRendered'].length) {
+                opt.onItemRendered = this.handlers['_onItemRendered'][0];
             }
             this.beforeInit(opt);
             var t = this.root.dxTreeView(opt);

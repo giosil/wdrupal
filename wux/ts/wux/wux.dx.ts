@@ -2302,6 +2302,12 @@
             super(id ? id : '*', 'WDxTreeView');
         }
 
+        getInstance(opt?: DevExpress.ui.dxTreeViewOptions): DevExpress.ui.dxTreeView {
+            if (!this.mounted) return null;
+            if(opt) this.root.dxTreeView(opt);
+            return this.root.dxTreeView('instance');
+        }
+
         onItemClick(h: (e: { component?: DevExpress.ui.dxTreeView, element?: DevExpress.core.dxElement, model?: any, itemData?: any, itemElement?: DevExpress.core.dxElement, itemIndex?: number | any, jQueryEvent?: JQueryEventObject, event?: DevExpress.events.event, node?: DevExpress.ui.dxTreeViewNode }) => any): void {
             // Single handler
             this.handlers['_onItemClick'] = [h];
@@ -2324,6 +2330,17 @@
             }
         }
 
+        onItemRendered(h: (e: { component?: DevExpress.ui.dxTreeView, element?: DevExpress.core.dxElement, model?: any, itemData?: any, itemElement?: DevExpress.core.dxElement, itemIndex?: number, node?: DevExpress.ui.dxTreeViewNode }) => any): void {
+            // Single handler
+            this.handlers['_onItemRendered'] = [h];
+            if (this.mounted) {
+                let opt: DevExpress.ui.dxTreeViewOptions = {
+                    onItemRendered: h
+                };
+                this.root.dxTreeView(opt);
+            }
+        }
+
         getSelectedItems(): any[] {
             if (!this.mounted) return [];
             let n = this.root.dxTreeView('instance').getSelectedNodes();
@@ -2337,6 +2354,7 @@
             let opt: DevExpress.ui.dxTreeViewOptions = {};
             if (events.indexOf('_onItemClick') >= 0) opt.onItemClick = null;
             if (events.indexOf('_onSelectionChanged') >= 0) opt.onSelectionChanged = null;
+            if (events.indexOf('_onItemRendered') >= 0) opt.onItemRendered = null;
             this.root.dxTreeView(opt);
             return this;
         }
@@ -2379,6 +2397,9 @@
             }
             if (this.handlers['_onSelectionChanged'] && this.handlers['_onSelectionChanged'].length) {
                 opt.onSelectionChanged = this.handlers['_onSelectionChanged'][0];
+            }
+            if (this.handlers['_onItemRendered'] && this.handlers['_onItemRendered'].length) {
+                opt.onItemRendered = this.handlers['_onItemRendered'][0];
             }
 
             this.beforeInit(opt);
