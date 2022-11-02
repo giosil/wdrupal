@@ -5442,7 +5442,12 @@ export namespace interaction {
      * interactions to be used with the ol.Map constructor's interactions option.
      * @api stable
      */
-    function defaults(opt_options?: olx.interaction.DefaultsOptions): ol.Collection<Interaction>;
+    // OpenLayers >= 7.1
+    namespace defaults {
+        function defaults(opt_options?: olx.interaction.DefaultsOptions): ol.Collection<Interaction>;
+    }
+    // OpenLayers <= 6.14.1
+    // function defaults(opt_options?: olx.interaction.DefaultsOptions): ol.Collection<Interaction>;
 
     /**
      * @classdesc

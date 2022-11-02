@@ -421,7 +421,7 @@ var GUI;
                 this.controls = ol.control.defaults(this._cfg.controls);
             }
             if (this._cfg.interactions) {
-                this.interactions = ol.interaction.defaults(this._cfg.interactions);
+                this.interactions = ol.interaction.defaults.defaults(this._cfg.interactions);
             }
             this.map = new ol.Map({
                 target: this.id,

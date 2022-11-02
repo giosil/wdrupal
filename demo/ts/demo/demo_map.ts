@@ -241,7 +241,10 @@ namespace GUI {
 				this.controls = ol.control.defaults(this._cfg.controls);
 			}
 			if(this._cfg.interactions) {
-				this.interactions = ol.interaction.defaults(this._cfg.interactions);
+				// OpenLayers <= 6.14.1
+				// this.interactions = ol.interaction.defaults(this._cfg.interactions);
+				// OpenLayers >= 7.1
+				this.interactions = ol.interaction.defaults.defaults(this._cfg.interactions);
 			}
 			
 			this.map = new ol.Map({
