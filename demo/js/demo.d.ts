@@ -59,6 +59,7 @@ declare namespace GUI {
     type OLMarkerColor = 'blue' | 'green' | 'orange' | 'purple' | 'red' | 'yellow';
     export class OLMap extends WUX.WComponent<any, string> {
         _cfg: OLMapCfg;
+        imgs: string;
         map: ol.Map;
         view: ol.View;
         controls: ol.Collection<ol.control.Control>;

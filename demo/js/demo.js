@@ -231,6 +231,7 @@ var GUI;
         __extends(OLMap, _super);
         function OLMap(id, classStyle, style, attributes) {
             var _this = _super.call(this, id ? id : '*', 'OLMap', null, classStyle, style ? style : 'width:100%;height:600px', attributes) || this;
+            _this.imgs = '/modules/demo/img/';
             _this._cfg = {};
             _this.markers = [];
             _this.mrkFea = [];
@@ -299,7 +300,7 @@ var GUI;
                     anchor: [0.5, 46],
                     anchorXUnits: 'fraction',
                     anchorYUnits: 'pixels',
-                    src: '/modules/sira/img/marker-' + c + '.png',
+                    src: this.imgs + 'marker-' + c + '.png',
                     scale: 1,
                 })
             }));
@@ -317,7 +318,7 @@ var GUI;
                     anchor: [0.5, 46],
                     anchorXUnits: 'fraction',
                     anchorYUnits: 'pixels',
-                    src: '/modules/sira/img/marker-' + c + '.png',
+                    src: this.imgs + 'marker-' + c + '.png',
                     scale: 0.6,
                 })
             }));
@@ -531,7 +532,7 @@ var GUI;
                     anchor: [0.5, 46],
                     anchorXUnits: 'fraction',
                     anchorYUnits: 'pixels',
-                    src: '/modules/sira/img/marker-' + color + '.png',
+                    src: this.imgs + 'marker-' + color + '.png',
                     scale: 0.6,
                 })
             }));

@@ -30,6 +30,7 @@ namespace GUI {
 
 	export class OLMap extends WUX.WComponent<any, string> {
 		_cfg: OLMapCfg;
+		imgs: string = '/modules/demo/img/';
 
 		map: ol.Map;
 		view: ol.View;
@@ -125,7 +126,7 @@ namespace GUI {
 					anchor: [0.5, 46],
 					anchorXUnits: 'fraction',
 					anchorYUnits: 'pixels',
-					src: '/modules/sira/img/marker-' + c + '.png',
+					src: this.imgs + 'marker-' + c + '.png',
 					scale: 1,
 				})
 			}));
@@ -142,7 +143,7 @@ namespace GUI {
 					anchor: [0.5, 46],
 					anchorXUnits: 'fraction',
 					anchorYUnits: 'pixels',
-					src: '/modules/sira/img/marker-' + c + '.png',
+					src: this.imgs + 'marker-' + c + '.png',
 					scale: 0.6,
 				})
 			}));
@@ -354,7 +355,7 @@ namespace GUI {
 					anchor: [0.5, 46],
 					anchorXUnits: 'fraction',
 					anchorYUnits: 'pixels',
-					src: '/modules/sira/img/marker-' + color + '.png',
+					src: this.imgs + 'marker-' + color + '.png',
 					scale: 0.6,
 				})
 			}));
