@@ -1,5 +1,5 @@
 demo-ui:
-  version: 1.0
+  version: '1.0'
   css:
     base:
       css/ol.css: { preprocess: false }  
