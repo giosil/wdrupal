@@ -1,7 +1,7 @@
 var $ = jQuery.noConflict();
 
-$wuxwp = $('#wux-waitpls');
-if(!this.$wuxwp.length) {
+let $wuxwp = $('#wux-waitpls');
+if(!$wuxwp.length) {
   $('<div id="wux-waitpls" class="waitpls"></div>').appendTo('body');
 }
 
