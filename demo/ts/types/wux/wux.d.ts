@@ -194,9 +194,7 @@ declare namespace WUX {
         Blank = "blank",
         Link = "link",
         Integer = "integer",
-        Cron = "crontab",
-        TreeSelect = "tree",
-        Ftp = "ftp"
+        TreeSelect = "tree"
     }
     interface WWrapper {
         id?: string;
@@ -470,17 +468,20 @@ declare namespace WUX {
         SM_DEFAULT = "btn btn-sm btn-default btn-block",
         SM_SECONDARY = "btn btn-sm btn-secondary btn-block",
         SM_INFO = "btn btn-sm btn-info btn-block",
+        SM_WARNING = "btn btn-sm btn-warning btn-block",
         SM_DANGER = "btn btn-sm btn-danger btn-block",
         SM_WHITE = "btn btn-sm btn-white btn-block",
         ACT_PRIMARY = "btn btn-sm btn-primary",
         ACT_DEFAULT = "btn btn-sm btn-default",
         ACT_SECONDARY = "btn btn-sm btn-secondary",
         ACT_INFO = "btn btn-sm btn-info",
+        ACT_WARNING = "btn btn-sm btn-warning",
         ACT_DANGER = "btn btn-sm btn-danger",
         ACT_WHITE = "btn btn-sm btn-white",
         ACT_OUTLINE_PRIMARY = "btn btn-sm btn-primary btn-outline",
         ACT_OUTLINE_DEFAULT = "btn btn-sm btn-default btn-outline",
         ACT_OUTLINE_INFO = "btn btn-sm btn-info btn-outline",
+        ACT_OUTLINE_WARNING = "btn btn-sm btn-warning btn-outline",
         ACT_OUTLINE_DANGER = "btn btn-sm btn-danger btn-outline"
     }
     class ATT {
@@ -763,7 +764,7 @@ declare namespace WUX {
     class WLabel extends WComponent<string, string> {
         forId: string;
         protected blinks: number;
-        constructor(id: string, text?: string, icon?: string, classStyle?: string, style?: string | WStyle, attributes?: string | object);
+        constructor(id?: string, text?: string, icon?: string, classStyle?: string, style?: string | WStyle, attributes?: string | object);
         get icon(): string;
         set icon(i: string);
         protected updateState(nextState: string): void;
@@ -811,7 +812,7 @@ declare namespace WUX {
     }
     class WButton extends WComponent<string, string> {
         readonly type: string;
-        constructor(id: string, text?: string, icon?: string, classStyle?: string, style?: string | WStyle, attributes?: string | object, type?: string);
+        constructor(id?: string, text?: string, icon?: string, classStyle?: string, style?: string | WStyle, attributes?: string | object, type?: string);
         get icon(): string;
         set icon(i: string);
         setText(text?: string, icon?: string): void;
@@ -822,7 +823,7 @@ declare namespace WUX {
     class WLink extends WComponent<string, string> {
         protected _href: string;
         protected _target: string;
-        constructor(id: string, text?: string, icon?: string, classStyle?: string, style?: string | WStyle, attributes?: string | object, href?: string, target?: string);
+        constructor(id?: string, text?: string, icon?: string, classStyle?: string, style?: string | WStyle, attributes?: string | object, href?: string, target?: string);
         get icon(): string;
         set icon(s: string);
         get href(): string;
@@ -835,7 +836,7 @@ declare namespace WUX {
     }
     class WTab extends WComponent<any, number> {
         tabs: WContainer[];
-        constructor(id: string, classStyle?: string, style?: string | WStyle, attributes?: string | object, props?: any);
+        constructor(id?: string, classStyle?: string, style?: string | WStyle, attributes?: string | object, props?: any);
         addTab(title: string, icon?: string): WContainer;
         protected render(): string;
         protected componentDidUpdate(prevProps: any, prevState: any): void;
@@ -845,7 +846,7 @@ declare namespace WUX {
     class WSelect extends WComponent implements WISelectable {
         options: Array<string | WEntity>;
         multiple: boolean;
-        constructor(id: string, options?: Array<string | WEntity>, multiple?: boolean, classStyle?: string, style?: string | WStyle, attributes?: string | object);
+        constructor(id?: string, options?: Array<string | WEntity>, multiple?: boolean, classStyle?: string, style?: string | WStyle, attributes?: string | object);
         getProps(): any;
         select(i: number): this;
         addOption(e: string | WEntity, sel?: boolean): this;
@@ -859,7 +860,7 @@ declare namespace WUX {
     class WRadio extends WComponent implements WISelectable {
         options: Array<string | WEntity>;
         label: string;
-        constructor(id: string, options: Array<string | WEntity>, classStyle?: string, style?: string | WStyle, attributes?: string | object, props?: any);
+        constructor(id?: string, options?: Array<string | WEntity>, classStyle?: string, style?: string | WStyle, attributes?: string | object, props?: any);
         set tooltip(s: string);
         select(i: number): this;
         protected render(): string;
@@ -977,6 +978,7 @@ declare namespace WUX {
         stateChangeOnBlur: boolean;
         nextOnEnter: boolean;
         inputClass: string;
+        checkboxStyle: string;
         nextMap: {
             [fid: string]: string;
         };
@@ -1021,8 +1023,6 @@ declare namespace WUX {
         addRadioField(fieldId: string, label: string, options?: (string | WEntity)[]): this;
         addPasswordField(fieldId: string, label: string, readonly?: boolean): this;
         addEmailField(fieldId: string, label: string, readonly?: boolean): this;
-        addFtpField(fieldId: string, label: string, readonly?: boolean): this;
-        addCronField(fieldId: string, label: string, readonly?: boolean, value?: string): this;
         addComponent(fieldId: string, label: string, component: WComponent, readonly?: boolean): this;
         addCaption(label: string, icon?: string, classStyle?: string, style?: string | WStyle): this;
         addInternalField(fieldId: string, value?: any): this;
@@ -1313,7 +1313,7 @@ declare namespace WUX {
         setColVisible(col: string, vis: boolean): this;
         edit(row: number, col: any, t?: number): this;
         getFilter(key: string): string;
-        getInstance(): DevExpress.ui.dxDataGrid;
+        getInstance(gopt?: DevExpress.ui.dxDataGridOptions): DevExpress.ui.dxDataGrid;
         getSelectedKeys(): any[];
         getSelectedRows(): number[];
         isSelected(data: any): boolean;
@@ -1530,7 +1530,7 @@ declare namespace WUX {
         setColVisible(col: string, vis: boolean): this;
         edit(row: number, col: any, t?: number): this;
         getFilter(key: string): string;
-        getInstance(): DevExpress.ui.dxTreeList;
+        getInstance(gopt?: DevExpress.ui.dxTreeListOptions): DevExpress.ui.dxTreeList;
         getSelectedRows(): number[];
         getSelectedRowsData(): any[];
         getFilteredRowsData(): any[];
@@ -1622,6 +1622,7 @@ declare namespace WUX {
         searchEnabled: boolean;
         selectionMode: 'multiple' | 'single';
         constructor(id?: string);
+        getInstance(opt?: DevExpress.ui.dxTreeViewOptions): DevExpress.ui.dxTreeView;
         onItemClick(h: (e: {
             component?: DevExpress.ui.dxTreeView;
             element?: DevExpress.core.dxElement;
@@ -1642,6 +1643,15 @@ declare namespace WUX {
             itemIndex?: number | any;
             jQueryEvent?: JQueryEventObject;
             event?: DevExpress.events.event;
+            node?: DevExpress.ui.dxTreeViewNode;
+        }) => any): void;
+        onItemRendered(h: (e: {
+            component?: DevExpress.ui.dxTreeView;
+            element?: DevExpress.core.dxElement;
+            model?: any;
+            itemData?: any;
+            itemElement?: DevExpress.core.dxElement;
+            itemIndex?: number;
             node?: DevExpress.ui.dxTreeViewNode;
         }) => any): void;
         getSelectedItems(): any[];
