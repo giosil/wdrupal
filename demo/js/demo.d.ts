@@ -83,6 +83,7 @@ declare namespace GUI {
         clearPolygons(): void;
         addMarker(lon: number, lat: number, name?: string, color?: OLMarkerColor, onhover?: (e: any) => any, onclick?: (e: any) => any): void;
         addPolygon(type: string, coordinates: any[], name?: string, color?: string, onhover?: (e: any) => any, onclick?: (e: any) => any): void;
+        addGeometry(json: string, name: string, color?: string, onhover?: (e: any) => any, onclick?: (e: any) => any): void;
         inflate(i: number): void;
         deflate(i: number): void;
         center(lon: number, lat: number, zoom: number): void;

@@ -6,7 +6,20 @@ var view = new ol.View({
   center: ol.proj.fromLonLat([12.4846, 41.8977]),
   zoom: 9
 });
-
+var map_c = ol.control.defaults.defaults({
+  attribution: false,
+  zoom: true,
+});
+var map_i = ol.interaction.defaults.defaults({
+  doubleClickZoom: false,
+  dragAndDrop: false,
+  dragPan: false,
+  keyboardPan: false,
+  keyboardZoom: false,
+  mouseWheelZoom: false,
+  pointer: false,
+  select: false
+});
 var map = new ol.Map({
   target: 'olm-map',
   layers: [
@@ -15,20 +28,8 @@ var map = new ol.Map({
     })
   ],
   view: view,
-  controls: ol.control.defaults({
-    attribution: false,
-    zoom: true,
-  }),
-  interactions: ol.interaction.defaults({
-    doubleClickZoom: false,
-    dragAndDrop: false,
-    dragPan: false,
-    keyboardPan: false,
-    keyboardZoom: false,
-    mouseWheelZoom: false,
-    pointer: false,
-    select: false
-  })
+  controls: map_c,
+  interactions: map_i
 });
 map.on('click', function(e) {
   var f = map.forEachFeatureAtPixel(e.pixel, function(feature) { return feature; });

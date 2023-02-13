@@ -484,7 +484,10 @@ export namespace control {
      * @return Controls.
      * @api stable
      */
-    function defaults(opt_options?: olx.control.DefaultsOptions): ol.Collection<Control>;
+    // OpenLayers >= 7.1
+    namespace defaults {
+        function defaults(opt_options?: olx.control.DefaultsOptions): ol.Collection<Control>;
+    }
 
     /**
      * @classdesc

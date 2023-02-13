@@ -287,6 +287,30 @@ var GUI;
                 this._addPolygon(type, coordinates, name, color);
             }
         };
+        OLMap.prototype.addGeometry = function (json, name, color, onhover, onclick) {
+            if (!json)
+                return;
+            try {
+                var g = JSON.parse(json);
+                if (!g)
+                    return;
+                var t = WUtil.getString(g, "type");
+                if (!t)
+                    return;
+                var c = WUtil.getArray(g, "coordinates");
+                if (!c || !c.length)
+                    return;
+                if (t == 'Point') {
+                    this.addMarker(c[0], c[1], name, color, onhover, onclick);
+                }
+                else {
+                    this.addPolygon(t, c, name, color, onhover, onclick);
+                }
+            }
+            catch (err) {
+                console.error('Error ' + err + ' in addGeometry ' + json);
+            }
+        };
         OLMap.prototype.inflate = function (i) {
             if (i < 0 && i >= this.mrkFea.length)
                 return;
@@ -419,7 +443,7 @@ var GUI;
                 zoom: this._cfg.zoom
             });
             if (this._cfg.controls) {
-                this.controls = ol.control.defaults(this._cfg.controls);
+                this.controls = ol.control.defaults.defaults(this._cfg.controls);
             }
             if (this._cfg.interactions) {
                 this.interactions = ol.interaction.defaults.defaults(this._cfg.interactions);

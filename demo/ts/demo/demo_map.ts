@@ -115,6 +115,27 @@ namespace GUI {
 			}
 		}
 
+		addGeometry(json: string, name: string, color?: string, onhover?: (e: any) => any, onclick?: (e: any) => any): void {
+			if(!json) return;
+			try {
+				let g = JSON.parse(json);
+				if(!g) return;
+				let t = WUtil.getString(g, "type");
+				if(!t) return;
+				let c = WUtil.getArray(g, "coordinates");
+				if(!c || !c.length) return;
+				if(t == 'Point') {
+					this.addMarker(c[0], c[1], name, color as OLMarkerColor, onhover, onclick);
+				}
+				else {
+					this.addPolygon(t, c, name, color, onhover, onclick);
+				}
+			}
+			catch(err) {
+				console.error('Error ' + err + ' in addGeometry ' + json);
+			}
+		}
+
 		inflate(i: number) {
 			if(i < 0 && i >= this.mrkFea.length) return;
 			let mi = this.markers[i];
@@ -239,7 +260,10 @@ namespace GUI {
 				zoom: this._cfg.zoom
 			});
 			if(this._cfg.controls) {
-				this.controls = ol.control.defaults(this._cfg.controls);
+				// OpenLayers <= 6.14.1
+				// this.controls = ol.control.defaults(this._cfg.controls);
+				// OpenLayers >= 7.1
+				this.controls = ol.control.defaults.defaults(this._cfg.controls);
 			}
 			if(this._cfg.interactions) {
 				// OpenLayers <= 6.14.1
