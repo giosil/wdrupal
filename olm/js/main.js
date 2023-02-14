@@ -20,11 +20,14 @@ var map_i = ol.interaction.defaults.defaults({
   pointer: false,
   select: false
 });
+// source: new ol.source.Stamen({layer: 'watercolor'})
+// source: new ol.source.Stamen({layer: 'terrain'})
+// source: new ol.source.OSM()
 var map = new ol.Map({
   target: 'olm-map',
   layers: [
     new ol.layer.Tile({
-      source: new ol.source.OSM()
+      source: new ol.source.Stamen({layer: 'terrain'})
     })
   ],
   view: view,

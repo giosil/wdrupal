@@ -132,7 +132,7 @@ namespace GUI {
 				}
 			}
 			catch(err) {
-				console.error('Error ' + err + ' in addGeometry ' + json);
+				console.error(err + ' in addGeometry ' + json);
 			}
 		}
 
@@ -271,6 +271,10 @@ namespace GUI {
 				// OpenLayers >= 7.1
 				this.interactions = ol.interaction.defaults.defaults(this._cfg.interactions);
 			}
+			
+			// source: new ol.source.Stamen({layer: 'watercolor'})
+			// source: new ol.source.Stamen({layer: 'terrain'})
+			// source: new ol.source.OSM()
 			
 			this.map = new ol.Map({
 				target: this.id,
