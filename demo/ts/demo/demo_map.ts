@@ -171,7 +171,7 @@ namespace GUI {
 		}
 
 		center(lon: number, lat: number, zoom: number): void {
-			this.hidePopup();
+			this.hidePopup(true);
 
 			if(!lon && !lat) return;
 			if(this.view) {

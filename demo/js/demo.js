@@ -308,7 +308,7 @@ var GUI;
                 }
             }
             catch (err) {
-                console.error('Error ' + err + ' in addGeometry ' + json);
+                console.error(err + ' in addGeometry ' + json);
             }
         };
         OLMap.prototype.inflate = function (i) {
@@ -348,7 +348,7 @@ var GUI;
             }));
         };
         OLMap.prototype.center = function (lon, lat, zoom) {
-            this.hidePopup();
+            this.hidePopup(true);
             if (!lon && !lat)
                 return;
             if (this.view) {
