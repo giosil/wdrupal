@@ -232,6 +232,8 @@ var GUI;
         function OLMap(id, classStyle, style, attributes) {
             var _this = _super.call(this, id ? id : '*', 'OLMap', null, classStyle, style ? style : 'width:100%;height:600px', attributes) || this;
             _this.imgs = '/modules/demo/img/';
+            _this.pdx = -3200;
+            _this.pdy = 0;
             _this._cfg = {};
             _this.markers = [];
             _this.mrkFea = [];
@@ -410,7 +412,13 @@ var GUI;
                 this.hidePopup(true);
             this.popupn = n;
             if (n) {
-                this.popup.setPosition(e.coordinate);
+                if (e.coordinate) {
+                    var c = [e.coordinate[0] + this.pdx, e.coordinate[1] + this.pdy];
+                    this.popup.setPosition(c);
+                }
+                else {
+                    this.popup.setPosition(e.coordinate);
+                }
                 this.$popup.popover({
                     placement: p,
                     html: true,

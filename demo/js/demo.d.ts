@@ -75,6 +75,8 @@ declare namespace GUI {
         $popup: JQuery;
         popup: ol.Overlay;
         popupn: string;
+        pdx: number;
+        pdy: number;
         constructor(id?: string, classStyle?: string, style?: string | WUX.WStyle, attributes?: string | object);
         get cfg(): OLMapCfg;
         set cfg(c: OLMapCfg);

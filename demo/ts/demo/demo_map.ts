@@ -50,6 +50,8 @@ namespace GUI {
 		$popup: JQuery;
 		popup: ol.Overlay;
 		popupn: string;
+		pdx: number = -3200;
+		pdy: number = 0;
 
 		constructor(id?: string, classStyle?: string, style?: string | WUX.WStyle, attributes?: string | object) {
 			// WComponent init
@@ -230,7 +232,13 @@ namespace GUI {
 			if(this.popupn) this.hidePopup(true);
 			this.popupn = n;
 			if (n) {
-				this.popup.setPosition(e.coordinate);
+				if(e.coordinate) {
+					let c: ol.Coordinate = [e.coordinate[0] + this.pdx, e.coordinate[1] + this.pdy] as ol.Coordinate;
+					this.popup.setPosition(c);
+				}
+				else {
+					this.popup.setPosition(e.coordinate);
+				}
 				this.$popup.popover({
 					placement: p,
 					html: true,
