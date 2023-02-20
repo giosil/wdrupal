@@ -56,7 +56,10 @@ declare namespace GUI {
         controls?: OLMapCon;
         interactions?: OLMapInt;
     }
-    type OLMarkerColor = 'blue' | 'green' | 'orange' | 'purple' | 'red' | 'yellow';
+    export interface OLMapShare {
+        view?: ol.View;
+    }
+    type OLMarkerColor = 'blue' | 'green' | 'orange' | 'purple' | 'red' | 'yellow' | 'gray';
     export class OLMap extends WUX.WComponent<any, string> {
         _cfg: OLMapCfg;
         imgs: string;
@@ -77,6 +80,7 @@ declare namespace GUI {
         popupn: string;
         pdx: number;
         pdy: number;
+        share: OLMapShare;
         constructor(id?: string, classStyle?: string, style?: string | WUX.WStyle, attributes?: string | object);
         get cfg(): OLMapCfg;
         set cfg(c: OLMapCfg);

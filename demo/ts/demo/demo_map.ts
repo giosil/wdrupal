@@ -26,7 +26,11 @@ namespace GUI {
 		interactions?: OLMapInt;
 	}
 
-	type OLMarkerColor = 'blue' | 'green' | 'orange' | 'purple' | 'red' | 'yellow';
+	export interface OLMapShare {
+		view?: ol.View;
+	}
+
+	type OLMarkerColor = 'blue' | 'green' | 'orange' | 'purple' | 'red' | 'yellow' | 'gray';
 
 	export class OLMap extends WUX.WComponent<any, string> {
 		_cfg: OLMapCfg;
@@ -52,6 +56,8 @@ namespace GUI {
 		popupn: string;
 		pdx: number = -3200;
 		pdy: number = 0;
+
+		share: OLMapShare;
 
 		constructor(id?: string, classStyle?: string, style?: string | WUX.WStyle, attributes?: string | object) {
 			// WComponent init
@@ -263,10 +269,25 @@ namespace GUI {
 			if(!this._cfg.lat) this._cfg.lat = 41.8977;
 			if(!this._cfg.zoom) this._cfg.zoom = 9;
 
-			this.view = new ol.View({
-				center: ol.proj.fromLonLat([this._cfg.lon, this._cfg.lat]),
-				zoom: this._cfg.zoom
-			});
+			if(this.share) {
+				if(this.share.view) {
+					this.view = this.share.view;
+				}
+				else {
+					this.view = new ol.View({
+						center: ol.proj.fromLonLat([this._cfg.lon, this._cfg.lat]),
+						zoom: this._cfg.zoom
+					});
+					this.share.view = this.view;
+				}
+			}
+			else {
+				this.view = new ol.View({
+					center: ol.proj.fromLonLat([this._cfg.lon, this._cfg.lat]),
+					zoom: this._cfg.zoom
+				});
+			}
+
 			if(this._cfg.controls) {
 				// OpenLayers <= 6.14.1
 				// this.controls = ol.control.defaults(this._cfg.controls);

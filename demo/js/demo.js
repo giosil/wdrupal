@@ -446,10 +446,24 @@ var GUI;
                 this._cfg.lat = 41.8977;
             if (!this._cfg.zoom)
                 this._cfg.zoom = 9;
-            this.view = new ol.View({
-                center: ol.proj.fromLonLat([this._cfg.lon, this._cfg.lat]),
-                zoom: this._cfg.zoom
-            });
+            if (this.share) {
+                if (this.share.view) {
+                    this.view = this.share.view;
+                }
+                else {
+                    this.view = new ol.View({
+                        center: ol.proj.fromLonLat([this._cfg.lon, this._cfg.lat]),
+                        zoom: this._cfg.zoom
+                    });
+                    this.share.view = this.view;
+                }
+            }
+            else {
+                this.view = new ol.View({
+                    center: ol.proj.fromLonLat([this._cfg.lon, this._cfg.lat]),
+                    zoom: this._cfg.zoom
+                });
+            }
             if (this._cfg.controls) {
                 this.controls = ol.control.defaults.defaults(this._cfg.controls);
             }
