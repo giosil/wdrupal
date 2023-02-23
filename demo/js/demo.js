@@ -232,7 +232,7 @@ var GUI;
         function OLMap(id, classStyle, style, attributes) {
             var _this = _super.call(this, id ? id : '*', 'OLMap', null, classStyle, style ? style : 'width:100%;height:600px', attributes) || this;
             _this.imgs = '/modules/demo/img/';
-            _this.pdx = -3200;
+            _this.pdx = 0;
             _this.pdy = 0;
             _this._cfg = {};
             _this.markers = [];
@@ -390,7 +390,14 @@ var GUI;
             if (hard) {
                 this.map.removeOverlay(this.popup);
                 this.$popup.remove();
-                this.$popup = $('<div id="' + this.subId('man-popup') + '"></div>').appendTo('body');
+                var s = '';
+                if (this.pdx)
+                    s += 'margin-left:' + this.pdx + 'px;';
+                if (this.pdy)
+                    s += 'margin-top:' + this.pdy + 'px;';
+                if (s)
+                    s = ' style="' + s + '"';
+                this.$popup = $('<div id="' + this.subId('man-popup') + '"' + s + '></div>').appendTo('body');
                 this.popup = new ol.Overlay({
                     element: this.$popup.get(0),
                     positioning: 'bottom-center',
@@ -412,13 +419,7 @@ var GUI;
                 this.hidePopup(true);
             this.popupn = n;
             if (n) {
-                if (e.coordinate) {
-                    var c = [e.coordinate[0] + this.pdx, e.coordinate[1] + this.pdy];
-                    this.popup.setPosition(c);
-                }
-                else {
-                    this.popup.setPosition(e.coordinate);
-                }
+                this.popup.setPosition(e.coordinate);
                 this.$popup.popover({
                     placement: p,
                     html: true,
@@ -483,7 +484,14 @@ var GUI;
             });
             this.$popup = $('#' + this.subId('man-popup'));
             if (!this.$popup.length) {
-                this.$popup = $('<div id="' + this.subId('man-popup') + '"></div>').appendTo('body');
+                var s = '';
+                if (this.pdx)
+                    s += 'margin-left:' + this.pdx + 'px;';
+                if (this.pdy)
+                    s += 'margin-top:' + this.pdy + 'px;';
+                if (s)
+                    s = ' style="' + s + '"';
+                this.$popup = $('<div id="' + this.subId('man-popup') + '"' + s + '></div>').appendTo('body');
             }
             this.popup = new ol.Overlay({
                 element: this.$popup.get(0),

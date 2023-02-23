@@ -54,7 +54,7 @@ namespace GUI {
 		$popup: JQuery;
 		popup: ol.Overlay;
 		popupn: string;
-		pdx: number = -3200;
+		pdx: number = 0;
 		pdy: number = 0;
 
 		share: OLMapShare;
@@ -218,7 +218,11 @@ namespace GUI {
 			if(hard) {
 				this.map.removeOverlay(this.popup);
 				this.$popup.remove();
-				this.$popup = $('<div id="' + this.subId('man-popup') + '"></div>').appendTo('body');
+				let s = '';
+				if(this.pdx) s+= 'margin-left:' + this.pdx + 'px;'
+				if(this.pdy) s+= 'margin-top:' + this.pdy + 'px;'
+				if(s) s = ' style="' + s + '"';
+				this.$popup = $('<div id="' + this.subId('man-popup') + '"' + s + '></div>').appendTo('body');
 				this.popup = new ol.Overlay({
 					element: this.$popup.get(0),
 					positioning: 'bottom-center',
@@ -238,13 +242,7 @@ namespace GUI {
 			if(this.popupn) this.hidePopup(true);
 			this.popupn = n;
 			if (n) {
-				if(e.coordinate) {
-					let c: ol.Coordinate = [e.coordinate[0] + this.pdx, e.coordinate[1] + this.pdy] as ol.Coordinate;
-					this.popup.setPosition(c);
-				}
-				else {
-					this.popup.setPosition(e.coordinate);
-				}
+				this.popup.setPosition(e.coordinate);
 				this.$popup.popover({
 					placement: p,
 					html: true,
@@ -319,7 +317,11 @@ namespace GUI {
 
 			this.$popup = $('#' + this.subId('man-popup'));
 			if(!this.$popup.length) {
-				this.$popup = $('<div id="' + this.subId('man-popup') + '"></div>').appendTo('body');
+				let s = '';
+				if(this.pdx) s+= 'margin-left:' + this.pdx + 'px;'
+				if(this.pdy) s+= 'margin-top:' + this.pdy + 'px;'
+				if(s) s = ' style="' + s + '"';
+				this.$popup = $('<div id="' + this.subId('man-popup') + '"' + s + '></div>').appendTo('body');
 			}
 	
 			this.popup = new ol.Overlay({
