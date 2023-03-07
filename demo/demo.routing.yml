@@ -13,3 +13,17 @@ demo.map:
     _title: 'Demo Map'
   requirements: 
     _permission: 'access content'
+
+demo.get_temi:
+  path: '/demo/api/get-temi'
+  defaults: 
+    _controller: '\Drupal\demo\Controller\DEMOController::api_get_temi'
+  requirements: 
+    _permission: 'access content'
+
+demo.upload:
+  path: '/demo/upload'
+  defaults:
+    _controller: '\Drupal\demo\Controller\DEMOController::upload'
+  requirements: 
+    _permission: 'access content'

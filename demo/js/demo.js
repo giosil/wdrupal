@@ -734,4 +734,56 @@ var GUI;
     }(WUX.WComponent));
     GUI.OLMap = OLMap;
 })(GUI || (GUI = {}));
+var GUI;
+(function (GUI) {
+    var GUIUpload = (function (_super) {
+        __extends(GUIUpload, _super);
+        function GUIUpload() {
+            return _super !== null && _super.apply(this, arguments) || this;
+        }
+        GUIUpload.prototype.render = function () {
+            var r = '<h3 class="arpa-title">Upload File</h3><br>';
+            r += '<div id="divUpl">';
+            r += '<form id="frmUpl" action="/demo/upload" method="post" enctype="multipart/form-data">';
+            r += '<input type="file" name="datafile" id="datafile">';
+            r += '<hr>';
+            r += '<input type="submit" value="Upload">';
+            r += '</form>';
+            r += '</div>';
+            return r;
+        };
+        GUIUpload.prototype.componentDidMount = function () {
+            $("#frmUpl").on("submit", function (e) {
+                e.preventDefault();
+                var file = $("#datafile")[0].files[0];
+                if (!file) {
+                    WUX.showWarning('Select a file');
+                    return;
+                }
+                var formData = new FormData();
+                formData.append("datafile", file);
+                $.ajax({
+                    url: "/demo/upload",
+                    type: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        console.log('response:', response);
+                        WUX.showSuccess('File uploaded.');
+                        var fileName = WUX.WUtil.getString(response, "filename");
+                        $("#divUpl").html('<p>File uploaded: ' + fileName + '</p>');
+                    },
+                    error: function (jqXHR, textStatus, errorThrow) {
+                        console.error(textStatus);
+                        console.error(errorThrow);
+                        WUX.showError('Error during upload file.');
+                    }
+                });
+            });
+        };
+        return GUIUpload;
+    }(WUX.WComponent));
+    GUI.GUIUpload = GUIUpload;
+})(GUI || (GUI = {}));
 //# sourceMappingURL=demo.js.map
