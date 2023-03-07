@@ -9,7 +9,7 @@
         legendStyle: string | WStyle;
         wrapper: WWrapper;
         stateComp: WComponent;
-        
+
         constructor(id?: string, classStyle?: string, style?: string | WStyle, attributes?: string | object, inline?: boolean, type?: string, addClassStyle?: string) {
             // WComponent init
             super(id, 'WContainer', type, classStyle, WUX.style(style), attributes);
@@ -1317,7 +1317,7 @@
             }
             else {
                 html += WUX.buildIcon(this.icon);
-            }            
+            }
             return this.build(this.rootTag, html, addAttributes);
         }
 
@@ -2302,7 +2302,7 @@
 
         addCaption(label: string, icon?: string, classStyle?: string, style?: string | WStyle): this {
             if (!label) return;
-            let component = new WUX.WLabel('', label, icon, classStyle, style);            
+            let component = new WUX.WLabel('', label, icon, classStyle, style);
             this.currRow.push({ 'id': '', 'label': '', 'type': WInputType.Component, 'component': component, 'readonly': true });
             this.components.push(component);
             this.captions.push(component);
@@ -2395,7 +2395,7 @@
                                 }
                                 else {
                                     $f.prop('readonly', fieldId);
-                                }                                
+                                }
                             }
                         }
                     }
@@ -2742,7 +2742,7 @@
                         case WInputType.Date:
                             this.dpids.push(f.id);
                             let dr = '<div class="input-group" id="igd-' + f.id + '">';
-                            dr += '<span class="input-group-addon">' + WUX.buildIcon(WIcon.CALENDAR) + '</span> ';
+                            dr += '<span class="input-group-addon">' + WUX.buildIcon(WUX.WIcon.CALENDAR) + '</span> ';
                             dr += '<input type="text" name="' + f.id + '" id="' + f.id + '" class="' + this.inputClass + '" ';
                             if (f.readonly) dr += 'readonly ';
                             if (f.enabled == false) dr += 'disabled ';
@@ -2878,7 +2878,7 @@
                         }
                         if (f.onmount) f.onmount(f);
                         if (f.onfocus) f.element.focus(f.onfocus);
-                        if (f.onblur) f.element.focus(f.onblur);
+                        if (f.onblur) f.element.blur(f.onblur);
                     }
                 }
             }

@@ -17,4 +17,4 @@ rem Usage: uglifyjs input_file -c (compress) -o (output_file) output_file
 call uglifyjs ./wux/js/wux.js -c -o ./wux/js/wux.min.js
 
 rem Share the file wux.d.ts with other projects.
-rem copy /Y .\wux\js\wux.d.ts ..\other\ts\types\wux\
+copy /Y .\wux\js\wux.d.ts ..\demo\ts\types\wux\

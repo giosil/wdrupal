@@ -2292,7 +2292,7 @@
     /**
     * Wrapper dxTreeView. Required DevExpress.ui.dxTreeView https://js.devexpress.com/
     */
-	export class WDxTreeView extends WUX.WComponent<string, any[]> {
+    export class WDxTreeView extends WUX.WComponent<string, any[]> {
         height: number;
         width: number;
         searchEnabled: boolean;
