@@ -2,6 +2,29 @@ declare namespace GUI {
     function getPageComponent(): WUX.WComponent;
 }
 declare namespace GUI {
+    export interface ChartData {
+        series?: string;
+        values?: string;
+        arguments?: string;
+        argType?: string;
+        data?: any[];
+    }
+    type CharType = 'line' | 'stackedline' | 'fullstackedline' | 'area' | 'stackedarea' | 'fullstackedarea' | 'bar';
+    export class Chart extends WUX.WComponent<CharType, ChartData> {
+        title: string;
+        source: any[];
+        series: Array<DevExpress.viz.ChartSeries>;
+        labels: boolean;
+        xTitle: string;
+        yTitle: string;
+        sTitle: string;
+        constructor(id?: string, type?: CharType, classStyle?: string, style?: string | WUX.WStyle, attributes?: string | object);
+        protected updateState(nextState: ChartData): void;
+        protected componentDidMount(): void;
+    }
+    export {};
+}
+declare namespace GUI {
     class GUIDemo extends WUX.WComponent {
         protected frmFilter: WUX.WFormPanel;
         protected btnRefresh: WUX.WButton;

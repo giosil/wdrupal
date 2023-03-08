@@ -15,6 +15,142 @@ var GUI;
 })(GUI || (GUI = {}));
 var GUI;
 (function (GUI) {
+    var WUtil = WUX.WUtil;
+    var Chart = (function (_super) {
+        __extends(Chart, _super);
+        function Chart(id, type, classStyle, style, attributes) {
+            var _this = _super.call(this, id ? id : '*', 'Chart', type, classStyle, style, attributes) || this;
+            _this.labels = false;
+            _this.forceOnChange = true;
+            return _this;
+        }
+        Chart.prototype.updateState = function (nextState) {
+            _super.prototype.updateState.call(this, nextState);
+            this.source = [];
+            this.series = [];
+            if (!this.state)
+                return;
+            var d = this.state.data;
+            if (!d || !d.length)
+                return;
+            var s = this.state.series;
+            var v = this.state.values;
+            if (!v)
+                return;
+            var a = this.state.arguments;
+            if (!a)
+                return;
+            var t = this.state.argType;
+            var noS = !s || s == a;
+            if (noS) {
+                this.series.push({
+                    "valueField": "s0", "name": this.sTitle ? this.sTitle : s
+                });
+            }
+            var arrayS = [];
+            var arrayA = [];
+            for (var _i = 0, d_1 = d; _i < d_1.length; _i++) {
+                var dr = d_1[_i];
+                if (!noS) {
+                    var serVal = dr[s];
+                    if (serVal && arrayS.indexOf(serVal) < 0) {
+                        var idx = arrayS.length;
+                        arrayS.push(serVal);
+                        this.series.push({
+                            "valueField": "s" + idx, "name": serVal
+                        });
+                    }
+                }
+                var argVal = dr[a];
+                if (argVal && arrayA.indexOf(argVal) < 0) {
+                    arrayA.push(argVal);
+                }
+            }
+            for (var _a = 0, arrayA_1 = arrayA; _a < arrayA_1.length; _a++) {
+                var ai = arrayA_1[_a];
+                var sr = {};
+                if (t == 'd') {
+                    var d_3 = WUtil.toDate(ai);
+                    sr["a"] = d_3 ? WUX.formatDate(d_3) : ai;
+                }
+                else {
+                    sr["a"] = ai;
+                }
+                for (var _b = 0, d_2 = d; _b < d_2.length; _b++) {
+                    var dr = d_2[_b];
+                    var argVal = dr[a];
+                    if (argVal != ai)
+                        continue;
+                    var value = dr[v];
+                    if (!value)
+                        value = 0;
+                    if (noS) {
+                        sr["s0"] = value;
+                    }
+                    else {
+                        var serVal = dr[s];
+                        var idx = arrayS.indexOf(serVal);
+                        if (idx < 0)
+                            continue;
+                        sr["s" + idx] = value;
+                    }
+                }
+                this.source.push(sr);
+            }
+        };
+        Chart.prototype.componentDidMount = function () {
+            if (this._tooltip) {
+                this.root.attr('title', this._tooltip);
+            }
+            if (!this.title)
+                this.title = '';
+            if (!this.source)
+                this.source = [];
+            if (!this.series)
+                this.series = [];
+            if (!this.props)
+                this.props = 'bar';
+            var opt = {
+                dataSource: this.source,
+                commonSeriesSettings: {
+                    argumentField: 'a',
+                    type: this.props,
+                    label: {
+                        visible: this.labels,
+                    },
+                },
+                series: this.series,
+                title: this.title,
+                legend: {
+                    verticalAlignment: 'bottom',
+                    horizontalAlignment: 'center',
+                },
+                export: {
+                    enabled: true,
+                }
+            };
+            if (this.xTitle) {
+                opt.argumentAxis = {
+                    title: {
+                        text: this.xTitle
+                    }
+                };
+            }
+            if (this.yTitle) {
+                opt.valueAxis = {
+                    title: {
+                        text: this.yTitle
+                    }
+                };
+            }
+            $('#' + this.id).dxChart(opt);
+        };
+        return Chart;
+    }(WUX.WComponent));
+    GUI.Chart = Chart;
+})(GUI || (GUI = {}));
+var GUI;
+(function (GUI) {
     var GUIDemo = (function (_super) {
         __extends(GUIDemo, _super);
         function GUIDemo() {
