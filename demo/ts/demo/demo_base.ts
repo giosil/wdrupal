@@ -14,4 +14,10 @@ namespace GUI {
 
 		return new GUIDemo();
 	}
+	
+	export function getUserLogged(): string {
+		let t = $('#toolbar-item-user');
+		if(!t.length) return '';
+		return t.text();
+	}
 }

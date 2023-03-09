@@ -12,6 +12,13 @@ var GUI;
         return new GUI.GUIDemo();
     }
     GUI.getPageComponent = getPageComponent;
+    function getUserLogged() {
+        var t = $('#toolbar-item-user');
+        if (!t.length)
+            return '';
+        return t.text();
+    }
+    GUI.getUserLogged = getUserLogged;
 })(GUI || (GUI = {}));
 var GUI;
 (function (GUI) {

@@ -1,5 +1,6 @@
 declare namespace GUI {
     function getPageComponent(): WUX.WComponent;
+    function getUserLogged(): string;
 }
 declare namespace GUI {
     export interface ChartData {
