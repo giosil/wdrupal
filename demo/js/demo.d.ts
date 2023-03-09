@@ -9,18 +9,25 @@ declare namespace GUI {
         argType?: string;
         data?: any[];
     }
-    type CharType = 'line' | 'stackedline' | 'fullstackedline' | 'area' | 'stackedarea' | 'fullstackedarea' | 'bar';
+    type CharType = 'area' | 'bar' | 'bubble' | 'candlestick' | 'fullstackedarea' | 'fullstackedbar' | 'fullstackedline' | 'fullstackedspline' | 'fullstackedsplinearea' | 'line' | 'rangearea' | 'rangebar' | 'scatter' | 'spline' | 'splinearea' | 'stackedarea' | 'stackedbar' | 'stackedline' | 'stackedspline' | 'stackedsplinearea' | 'steparea' | 'stepline' | 'stock';
     export class Chart extends WUX.WComponent<CharType, ChartData> {
         title: string;
+        subTitle: string;
+        palette: any;
         source: any[];
         series: Array<DevExpress.viz.ChartSeries>;
         labels: boolean;
         xTitle: string;
+        xRotate: number;
         yTitle: string;
         sTitle: string;
+        pSymbol: 'circle' | 'cross' | 'polygon' | 'square' | 'triangleDown' | 'triangleUp';
+        pSize: number;
+        pVisible: boolean;
         constructor(id?: string, type?: CharType, classStyle?: string, style?: string | WUX.WStyle, attributes?: string | object);
         protected updateState(nextState: ChartData): void;
         protected componentDidMount(): void;
+        getInstance(copt?: DevExpress.viz.dxChartOptions): DevExpress.viz.dxChart;
     }
     export {};
 }

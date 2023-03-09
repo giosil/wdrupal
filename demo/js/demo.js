@@ -118,6 +118,11 @@ var GUI;
                     label: {
                         visible: this.labels,
                     },
+                    point: {
+                        symbol: this.pSymbol,
+                        size: this.pSize,
+                        visible: this.pVisible
+                    }
                 },
                 series: this.series,
                 title: this.title,
@@ -127,8 +132,30 @@ var GUI;
                 },
                 export: {
                     enabled: true,
+                },
+                tooltip: {
+                    enabled: true,
                 }
             };
+            if (this.palette) {
+                opt.palette = this.palette;
+            }
+            if (this.xRotate) {
+                opt.argumentAxis = {
+                    label: {
+                        displayMode: "rotate",
+                        rotationAngle: this.xRotate
+                    }
+                };
+            }
+            if (this.subTitle) {
+                opt.title = {
+                    text: this.title,
+                    subtitle: {
+                        text: this.subTitle
+                    }
+                };
+            }
             if (this.xTitle) {
                 opt.argumentAxis = {
                     title: {
@@ -144,6 +171,13 @@ var GUI;
                 };
             }
             $('#' + this.id).dxChart(opt);
+        };
+        Chart.prototype.getInstance = function (copt) {
+            if (!this.mounted)
+                return null;
+            if (copt)
+                this.root.dxChart(copt);
+            return this.root.dxChart('instance');
         };
         return Chart;
     }(WUX.WComponent));
