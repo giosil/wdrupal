@@ -2380,8 +2380,19 @@
         beforeInit(opt: DevExpress.ui.dxTreeViewOptions): void {
         }
 
-        protected componentDidMount(): void {
+        expandAll(): this {
+            if (!this.mounted) return this;
+            this.root.dxTreeView('expandAll');
+            return this;
+        }
 
+        collapseAll(): this {
+            if (!this.mounted) return this;
+            this.root.dxTreeView('collapseAll');
+            return this;
+        }
+
+        protected componentDidMount(): void {
             let opt: DevExpress.ui.dxTreeViewOptions = {
                 height: this.height,
                 width: this.width,

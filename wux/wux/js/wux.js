@@ -9229,6 +9229,18 @@ var WUX;
         };
         WDxTreeView.prototype.beforeInit = function (opt) {
         };
+        WDxTreeView.prototype.expandAll = function () {
+            if (!this.mounted)
+                return this;
+            this.root.dxTreeView('expandAll');
+            return this;
+        };
+        WDxTreeView.prototype.collapseAll = function () {
+            if (!this.mounted)
+                return this;
+            this.root.dxTreeView('collapseAll');
+            return this;
+        };
         WDxTreeView.prototype.componentDidMount = function () {
             var opt = {
                 height: this.height,
