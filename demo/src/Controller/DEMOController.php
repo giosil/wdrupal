@@ -8,8 +8,16 @@ use Symfony\Component\HttpFoundation\Response;
 class DEMOController {
   
   public function content() {
+    $data = '';
+    $user = \Drupal::currentUser();
+    if($user->isAuthenticated()) {
+      $name = $user->getAccountName();
+      if(!is_null($name)) {
+        $data = ' data-user="' . $name . '"';
+      }
+    }
     return array(
-      '#markup' => '<div id="view-root"></div>'
+      '#markup' => '<div id="view-root"' . $data . '></div>'
     );
   }
 

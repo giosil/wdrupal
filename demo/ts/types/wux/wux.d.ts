@@ -1659,6 +1659,8 @@ declare namespace WUX {
         protected updateState(nextState: any[]): void;
         protected updateProps(nextProps: string): void;
         beforeInit(opt: DevExpress.ui.dxTreeViewOptions): void;
+        expandAll(): this;
+        collapseAll(): this;
         protected componentDidMount(): void;
     }
 }
