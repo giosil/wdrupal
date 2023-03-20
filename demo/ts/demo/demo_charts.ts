@@ -215,4 +215,116 @@ namespace GUI {
 		}
 	}
 
+	export class PieChart extends WUX.WComponent<'donut' | 'doughnut' | 'pie', ChartData> {
+		title: string;
+		subTitle: string;
+		palette: any
+		source: any[];
+		series: Array<DevExpress.viz.PieChartSeries>;
+		labels: boolean = false;
+
+		constructor(id?: string, type?: 'donut' | 'doughnut' | 'pie', classStyle?: string, style?: string | WUX.WStyle, attributes?: string | object) {
+			super(id ? id : '*', 'PieChart', type, classStyle, style, attributes);
+			this.forceOnChange = true;
+		}
+
+		protected updateState(nextState: ChartData): void {
+			super.updateState(nextState);
+
+			this.source = [];
+			this.series = [];
+
+			if(!this.state) return;
+			let d = this.state.data;
+			if(!d || !d.length) return;
+
+			let v = this.state.values;
+			if(!v) return;
+			let a = this.state.arguments;
+			if(!a) this.state.series;
+			if(!a) return;
+			
+			// Array di arguments
+			let arrayA: any[] = [];
+			let mapAV: {[arg: string]: number} = {};
+			let tot = 0;
+			for(let r of d) {
+				let val = WUtil.getNumber(r, v);
+				tot += val;
+				
+				let arg = WUtil.getString(r, a);
+				if(!arg) continue;
+				if(arrayA.indexOf(arg) < 0) {
+					arrayA.push(arg);
+				}
+				
+				let pv = WUtil.getNumber(mapAV, arg);
+				mapAV[arg] = pv + val;
+			}
+			
+			for(let arg of arrayA) {
+				let val = WUtil.getNumber(mapAV, arg);
+				let prc = tot ? val * 100 / tot : 0;
+				this.source.push({"a": arg, "v": WUtil.round2(prc)});
+			}
+			
+			this.series.push({
+				argumentField: "a",
+				valueField: "v",
+				label: {
+					visible: this.labels,
+					connector: {
+						visible: this.labels,
+						width: 1
+					}
+				}
+			})
+		}
+
+		protected componentDidMount(): void {
+			if (this._tooltip) {
+				this.root.attr('title', this._tooltip);
+			}
+			if(!this.title) this.title = '';
+			if(!this.source) this.source = [];
+			if(!this.series) this.series = [];
+			if(!this.props) this.props = 'pie';
+
+			let opt: DevExpress.viz.dxPieChartOptions = {
+				dataSource: this.source,
+				series: this.series,
+				title: this.title,
+				legend: {
+					verticalAlignment: 'bottom',
+					horizontalAlignment: 'center',
+				},
+				export: {
+					enabled: true,
+				},
+				tooltip: {
+					enabled: true,
+				}
+			};
+			if(this.palette) {
+				opt.palette = this.palette;
+			}
+			if(this.subTitle) {
+				opt.title = {
+					text: this.title,
+					subtitle: {
+						text: this.subTitle
+					}
+				};
+			}
+
+			$('#' + this.id).dxPieChart(opt);
+		}
+
+		getInstance(copt?: DevExpress.viz.dxPieChartOptions): DevExpress.viz.dxPieChart {
+			if (!this.mounted) return null;
+			if(copt) this.root.dxPieChart(copt);
+			return this.root.dxPieChart('instance');
+		}
+	}
+
 }
