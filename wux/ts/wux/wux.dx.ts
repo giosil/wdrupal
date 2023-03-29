@@ -2297,6 +2297,7 @@
         width: number;
         searchEnabled: boolean;
         selectionMode: 'multiple' | 'single';
+        selectByClick: boolean;
 
         constructor(id?: string) {
             super(id ? id : '*', 'WDxTreeView');
@@ -2308,6 +2309,10 @@
             return this.root.dxTreeView('instance');
         }
 
+        /** 
+            To expand on click:
+            e.component.expandItem(e.node.key);
+        */
         onItemClick(h: (e: { component?: DevExpress.ui.dxTreeView, element?: DevExpress.core.dxElement, model?: any, itemData?: any, itemElement?: DevExpress.core.dxElement, itemIndex?: number | any, jQueryEvent?: JQueryEventObject, event?: DevExpress.events.event, node?: DevExpress.ui.dxTreeViewNode }) => any): void {
             // Single handler
             this.handlers['_onItemClick'] = [h];
@@ -2346,6 +2351,12 @@
             let n = this.root.dxTreeView('instance').getSelectedNodes();
             if(!n) return [];
             return n.map(function(node) { return node.itemData; });
+        }
+
+        select(item: any): this {
+            if (!this.mounted) return this;
+            this.root.dxTreeView('selectItem', item);
+            return this;
         }
 
         off(events?: string): this {
@@ -2402,6 +2413,7 @@
             if(this.selectionMode == "multiple") {
                 opt.selectionMode = "multiple";
                 opt.showCheckBoxesMode = "normal";
+                opt.selectByClick = this.selectByClick;
             }
             if (this.handlers['_onItemClick'] && this.handlers['_onItemClick'].length) {
                 opt.onItemClick = this.handlers['_onItemClick'][0];

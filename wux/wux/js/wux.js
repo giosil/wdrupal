@@ -5093,7 +5093,7 @@ var WUX;
             if (this._classStyle)
                 tableClass = this._classStyle.indexOf('table ') >= 0 ? this._classStyle : tableClass + ' ' + this._classStyle;
             var ts = this.style ? ' style="' + this.style + '"' : '';
-            var r = '<div class="table-responsive"><table id="' + this.id + '" class="' + tableClass + '"' + ts + '>';
+            var r = '<div class="table-responsive"' + WUX.buildCss(this.divStyle) + '><table id="' + this.id + '" class="' + tableClass + '"' + ts + '>';
             if (this.header && this.header.length) {
                 var ths = false;
                 if (typeof this.headStyle == 'string') {
@@ -9196,6 +9196,12 @@ var WUX;
                 return [];
             return n.map(function (node) { return node.itemData; });
         };
+        WDxTreeView.prototype.select = function (item) {
+            if (!this.mounted)
+                return this;
+            this.root.dxTreeView('selectItem', item);
+            return this;
+        };
         WDxTreeView.prototype.off = function (events) {
             _super.prototype.off.call(this, events);
             if (!events)
@@ -9251,6 +9257,7 @@ var WUX;
             if (this.selectionMode == "multiple") {
                 opt.selectionMode = "multiple";
                 opt.showCheckBoxesMode = "normal";
+                opt.selectByClick = this.selectByClick;
             }
             if (this.handlers['_onItemClick'] && this.handlers['_onItemClick'].length) {
                 opt.onItemClick = this.handlers['_onItemClick'][0];

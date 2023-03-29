@@ -916,6 +916,7 @@ declare namespace WUX {
         selectionMode: 'single' | 'multiple' | 'none';
         selectedRow: number;
         selClass: string;
+        divStyle: string | WStyle;
         colStyle: string | WStyle;
         rowStyle: string | WStyle;
         headStyle: string | WStyle;
@@ -1621,6 +1622,7 @@ declare namespace WUX {
         width: number;
         searchEnabled: boolean;
         selectionMode: 'multiple' | 'single';
+        selectByClick: boolean;
         constructor(id?: string);
         getInstance(opt?: DevExpress.ui.dxTreeViewOptions): DevExpress.ui.dxTreeView;
         onItemClick(h: (e: {
@@ -1655,6 +1657,7 @@ declare namespace WUX {
             node?: DevExpress.ui.dxTreeViewNode;
         }) => any): void;
         getSelectedItems(): any[];
+        select(item: any): this;
         off(events?: string): this;
         protected updateState(nextState: any[]): void;
         protected updateProps(nextProps: string): void;
