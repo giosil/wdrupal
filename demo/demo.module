@@ -1,5 +1,21 @@
 <?php
 
+function demo_install() {
+  \Drupal::logger('demo')->notice('demo_install...');
+}
+
+function demo_uninstall() {
+  \Drupal::logger('demo')->notice('demo_uninstall...');
+}
+
+function demo_cache_flush() {
+  \Drupal::logger('demo')->notice('demo_cache_flush...');
+}
+
+function demo_cron() {
+  \Drupal::logger('demo')->notice('demo_cron...');
+}
+
 function demo_preprocess_page(&$variables) {
   
   $req_uri = \Drupal::request()->getRequestUri();
