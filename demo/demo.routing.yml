@@ -27,3 +27,24 @@ demo.upload:
     _controller: '\Drupal\demo\Controller\DEMOController::upload'
   requirements: 
     _permission: 'access content'
+
+demo.files0:
+  path: '/demo/files/{fileName}'
+  defaults:
+    _controller: '\Drupal\demo\Controller\DEMOController::files0'
+  requirements: 
+    _permission: 'access content'
+
+demo.files1:
+  path: '/demo/files/{subfolder}/{fileName}'
+  defaults:
+    _controller: '\Drupal\demo\Controller\DEMOController::files1'
+  requirements: 
+    _permission: 'access content'
+
+demo.list_files:
+  path: '/demo/list-files'
+  defaults: 
+    _controller: '\Drupal\demo\Controller\DEMOController::list_files'
+  requirements: 
+    _permission: 'access content'

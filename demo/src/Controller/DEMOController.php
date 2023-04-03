@@ -20,7 +20,7 @@ class DEMOController {
       '#markup' => '<div id="view-root"' . $data . '></div>'
     );
   }
-
+  
   public function upload(Request $request) {
     $response = new Response();
     $response->headers->set('Content-Type', 'application/json');
@@ -28,22 +28,22 @@ class DEMOController {
 
     try {
       $uplFile = $request->files->get('datafile');
+      $subFolder = $request->request->get('subfolder');;
 
       if(is_null($uplFile)) {
         $json = $json . '"message": "datafile absent"';
       }
       else {
-        // Current Working Directory (/opt/drupal/web)
-        $currDir = getcwd();
-
         // Destination directory
-        $destDir = $currDir . '/sites/default/files/attachments';
-        if (!file_exists($destDir)) {
+        $destDir = '/data01';
+        if(!empty($subFolder)) {
+          $destDir = $destDir . '/' . $subFolder;
+        }
+        if(!file_exists($destDir)) {
           mkdir($destDir);
         }
 
         // Server data
-        $json .= '"currDir": "' . $currDir . '",';
         $json .= '"destDir": "' . $destDir . '",';
 
         // Uploaded file
@@ -71,6 +71,52 @@ class DEMOController {
     }
     $json = $json . '}';
 
+    $response->setContent($json);
+
+    return $response;
+  }
+
+  public function files0(string $fileName, Request $request) {
+    $filePath = '/data01' . '/' . $fileName;
+    if(!file_exists($filePath)) {
+      return new Response('', 404);
+    }
+    $mime = mime_content_type($filePath);
+    if($mime === false) {
+      return new Response('', 404);
+    }
+    $response = new Response();
+    $response->headers->set('Content-Type', $mime);
+    $response->setContent(file_get_contents($filePath));
+    return $response;
+  }
+
+  public function files1(string $subfolder, string $fileName, Request $request) {
+    $filePath = '/data01' . '/' . $subfolder . '/' . $fileName;
+    if(!file_exists($filePath)) {
+      return new Response('', 404);
+    }
+    $mime = mime_content_type($filePath);
+    if($mime === false) {
+      return new Response('', 404);
+    }
+    $response = new Response();
+    $response->headers->set('Content-Type', $mime);
+    $response->setContent(file_get_contents($filePath));
+    return $response;
+  }
+
+  public function list_files(Request $request) {
+    $destDir = '/data01';
+    $data_files = scandir($destDir);
+    $list_files = '';
+    if(!empty($data_files)) {
+      $list_files = implode(",", $data_files);
+    }
+
+    $response = new Response();
+    $response->headers->set('Content-Type', 'application/json');
+    $json = '{"dir": "' . $destDir . '","files":[' . $list_files . ']}';
     $response->setContent($json);
 
     return $response;
