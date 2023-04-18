@@ -398,6 +398,27 @@
             this.root.dxDataGrid('instance').getScrollable().scrollTo(location);
         }
 
+        scrollToRow(row: number, delta: number = 0, timeOut: number = 0) {
+            if (!this.mounted || !this.state) return;
+            let l = this.state.length;
+            if(l < 2) return;
+            let s = this.root.dxDataGrid('instance').getScrollable();
+            if(!s) return;
+            let h = s.scrollHeight();
+            if(!h) return;
+            row = row - delta;
+            if(row < 0) row = 0;
+            let t = row * (h / l);
+            if(timeOut) {
+                setTimeout(() => {
+                    s.scrollTo({"top": t, "left": 0});
+                }, timeOut);
+            }
+            else {
+                s.scrollTo({"top": t, "left": 0});
+            }
+        }
+
         clearFilter() {
             if (!this.mounted || !this.state) return;
             this.root.dxDataGrid('instance').clearFilter();

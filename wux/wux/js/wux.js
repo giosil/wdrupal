@@ -7321,6 +7321,33 @@ var WUX;
                 return;
             this.root.dxDataGrid('instance').getScrollable().scrollTo(location);
         };
+        WDXTable.prototype.scrollToRow = function (row, delta, timeOut) {
+            if (delta === void 0) { delta = 0; }
+            if (timeOut === void 0) { timeOut = 0; }
+            if (!this.mounted || !this.state)
+                return;
+            var l = this.state.length;
+            if (l < 2)
+                return;
+            var s = this.root.dxDataGrid('instance').getScrollable();
+            if (!s)
+                return;
+            var h = s.scrollHeight();
+            if (!h)
+                return;
+            row = row - delta;
+            if (row < 0)
+                row = 0;
+            var t = row * (h / l);
+            if (timeOut) {
+                setTimeout(function () {
+                    s.scrollTo({ "top": t, "left": 0 });
+                }, timeOut);
+            }
+            else {
+                s.scrollTo({ "top": t, "left": 0 });
+            }
+        };
         WDXTable.prototype.clearFilter = function () {
             if (!this.mounted || !this.state)
                 return;
