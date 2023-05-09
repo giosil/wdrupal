@@ -166,6 +166,87 @@ class DEMOController {
     }
   }
 
+  private function _get(Request &$request, $url, $fn) {
+    $ct = 'text/html';
+    $pos = strrpos($fn, ".");
+    if ($pos !== false) {
+      $ext = substr($fn, $pos);
+      if(strcmp($ext, '.bmp') === 0) $ct = 'image/bmp';
+      if(strcmp($ext, '.png') === 0) $ct = 'image/png';
+      if(strcmp($ext, '.jpg') === 0) $ct = 'image/jpeg';
+      if(strcmp($ext, '.gif') === 0) $ct = 'image/gif';
+      if(strcmp($ext, '.tif') === 0) $ct = 'image/tiff';
+      if(strcmp($ext, '.webp') === 0) $ct = 'image/webp';
+      if(strcmp($ext, '.svg') === 0) $ct = 'image/svg+xml';
+      if(strcmp($ext, '.htm') === 0) $ct = 'text/html';
+      if(strcmp($ext, '.html') === 0) $ct = 'text/html';
+      if(strcmp($ext, '.jsp') === 0) $ct = 'text/html';
+      if(strcmp($ext, '.asp') === 0) $ct = 'text/html';
+      if(strcmp($ext, '.aspx') === 0) $ct = 'text/html';
+      if(strcmp($ext, '.js') === 0) $ct = 'application/javascript';
+      if(strcmp($ext, '.css') === 0) $ct = 'text/css';
+      if(strcmp($ext, '.xml') === 0) $ct = 'text/xml';
+      if(strcmp($ext, '.txt') === 0) $ct = 'text/plain';
+      if(strcmp($ext, '.json') === 0) $ct = 'application/json';
+      if(strcmp($ext, '.pdf') === 0) $ct = 'application/pdf';
+      if(strcmp($ext, '.zip') === 0) $ct = 'application/zip';
+    }
+
+    $requri = $request->getRequestUri();
+
+    $params = "";
+    $pospar = strpos($requri, "?");
+    if($pospar !== false) $params = substr($requri, $pospar);
+
+    $response = new Response();
+    $response->setContent(file_get_contents($url . '/' . $fn . $params));
+    $response->headers->set('Content-Type',  $ct);
+
+    return $response;
+  }
+
+  private function getContentType($content, $defval = 'application/json') {
+    if(is_null($content)) return $defval;
+    if(empty($content)) return $defval;
+    $o = ord(substr($content, 0, 1));
+    switch ($o) {
+      case 37: // %
+        return 'application/pdf';
+      case 60: // <
+        return 'text/xml';
+      case 66: // B
+        return 'image/bmp';
+      case 71: // G
+        return 'image/gif';
+      case 73: // I
+        return 'image/tiff';
+      case 80: // P
+        return 'application/zip';
+      case 34:  // "
+      case 39:  // '
+      case 91:  // [
+      case 123: // {
+        return 'application/json';
+      case 40: // (
+      case 47: // /
+      case 102: // f (function)
+      case 108: // l (let)
+      case 118: // v (var)
+        return 'text/javascript';
+      case 35: // #
+      case 46: // .
+      case 64: // @
+          return 'text/css';
+      case 82: // R
+          return 'image/webp';
+      case 137:
+        return 'image/png';
+      case 255:
+        return 'image/jpeg';
+    }
+    return $defval;
+  }
+
   private function _mock(Request &$request, $url) {
 
     $response = new Response();
