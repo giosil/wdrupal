@@ -166,32 +166,7 @@ class DEMOController {
     }
   }
 
-  private function _get(Request &$request, $url, $fn) {
-    $ct = 'text/html';
-    $pos = strrpos($fn, ".");
-    if ($pos !== false) {
-      $ext = substr($fn, $pos);
-      if(strcmp($ext, '.bmp') === 0) $ct = 'image/bmp';
-      if(strcmp($ext, '.png') === 0) $ct = 'image/png';
-      if(strcmp($ext, '.jpg') === 0) $ct = 'image/jpeg';
-      if(strcmp($ext, '.gif') === 0) $ct = 'image/gif';
-      if(strcmp($ext, '.tif') === 0) $ct = 'image/tiff';
-      if(strcmp($ext, '.webp') === 0) $ct = 'image/webp';
-      if(strcmp($ext, '.svg') === 0) $ct = 'image/svg+xml';
-      if(strcmp($ext, '.htm') === 0) $ct = 'text/html';
-      if(strcmp($ext, '.html') === 0) $ct = 'text/html';
-      if(strcmp($ext, '.jsp') === 0) $ct = 'text/html';
-      if(strcmp($ext, '.asp') === 0) $ct = 'text/html';
-      if(strcmp($ext, '.aspx') === 0) $ct = 'text/html';
-      if(strcmp($ext, '.js') === 0) $ct = 'application/javascript';
-      if(strcmp($ext, '.css') === 0) $ct = 'text/css';
-      if(strcmp($ext, '.xml') === 0) $ct = 'text/xml';
-      if(strcmp($ext, '.txt') === 0) $ct = 'text/plain';
-      if(strcmp($ext, '.json') === 0) $ct = 'application/json';
-      if(strcmp($ext, '.pdf') === 0) $ct = 'application/pdf';
-      if(strcmp($ext, '.zip') === 0) $ct = 'application/zip';
-    }
-
+  private function _get(Request &$request, $url, $fileName) {
     $requri = $request->getRequestUri();
 
     $params = "";
@@ -199,10 +174,48 @@ class DEMOController {
     if($pospar !== false) $params = substr($requri, $pospar);
 
     $response = new Response();
-    $response->setContent(file_get_contents($url . '/' . $fn . $params));
-    $response->headers->set('Content-Type',  $ct);
+    $response->setContent(file_get_contents($url . '/' . $fileName . $params));
+    $response->headers->set('Content-Type',  $this->getContentTypeByName($fileName, 'text/html'));
 
     return $response;
+  }
+
+  private function getContentTypeByName($fileName, $defval = 'application/json') {
+    if(is_null($fileName)) return $defval;
+    $pos = strrpos($fileName, ".");
+    if ($pos === false) return $defval;
+    $ext = substr($fileName, $pos);
+    if(strcmp($ext, '.png') === 0) return 'image/png';
+    if(strcmp($ext, '.jpg') === 0) return 'image/jpeg';
+    if(strcmp($ext, '.webp') === 0) return 'image/webp';
+    if(strcmp($ext, '.bmp') === 0) return 'image/bmp';
+    if(strcmp($ext, '.gif') === 0) return 'image/gif';
+    if(strcmp($ext, '.tif') === 0) return 'image/tiff';
+    if(strcmp($ext, '.tiff') === 0) return 'image/tiff';
+    if(strcmp($ext, '.svg') === 0) return 'image/svg+xml';
+    if(strcmp($ext, '.htm') === 0) return 'text/html';
+    if(strcmp($ext, '.html') === 0) return 'text/html';
+    if(strcmp($ext, '.php') === 0) return 'text/html';
+    if(strcmp($ext, '.jsp') === 0) return 'text/html';
+    if(strcmp($ext, '.asp') === 0) return 'text/html';
+    if(strcmp($ext, '.aspx') === 0) return 'text/html';
+    if(strcmp($ext, '.css') === 0) return 'text/css';
+    if(strcmp($ext, '.csv') === 0) return 'text/csv';
+    if(strcmp($ext, '.txt') === 0) return 'text/plain';
+    if(strcmp($ext, '.js') === 0) return 'application/javascript';
+    if(strcmp($ext, '.xml') === 0) return 'application/xml';
+    if(strcmp($ext, '.json') === 0) return 'application/json';
+    if(strcmp($ext, '.pdf') === 0) return 'application/pdf';
+    if(strcmp($ext, '.zip') === 0) return 'application/zip';
+    if(strcmp($ext, '.ttf') === 0) return 'font/ttf';
+    if(strcmp($ext, '.woff') === 0) return 'font/woff';
+    if(strcmp($ext, '.woff2') === 0) return 'font/woff2';
+    if(strcmp($ext, '.eot') === 0) return 'application/vnd.ms-fontobject';
+    if(strcmp($ext, '.mp4') === 0) return 'video/mp4';
+    if(strcmp($ext, '.xlsx') === 0) return 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+    if(strcmp($ext, '.docx') === 0) return 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+    if(strcmp($ext, '.pptx') === 0) return 'application/vnd.openxmlformats-officedocument.presentationml.presentation';
+    return $defval;
   }
 
   private function getContentType($content, $defval = 'application/json') {
@@ -210,34 +223,37 @@ class DEMOController {
     if(empty($content)) return $defval;
     $o = ord(substr($content, 0, 1));
     switch ($o) {
-      case 37: // %
+      case 0:   // NUL
+        return 'video/mp4';
+      case 37:  // %
         return 'application/pdf';
-      case 60: // <
-        return 'text/xml';
-      case 66: // B
+      case 60:  // <
+        return 'application/xml';
+      case 66:  // B
         return 'image/bmp';
-      case 71: // G
+      case 71:  // G
         return 'image/gif';
-      case 73: // I
+      case 73:  // I
         return 'image/tiff';
-      case 80: // P
+      case 80:  // P
         return 'application/zip';
       case 34:  // "
       case 39:  // '
       case 91:  // [
       case 123: // {
         return 'application/json';
-      case 40: // (
-      case 47: // /
+      case 36:  // $
+      case 40:  // (
+      case 47:  // /
       case 102: // f (function)
       case 108: // l (let)
       case 118: // v (var)
         return 'text/javascript';
-      case 35: // #
-      case 46: // .
-      case 64: // @
+      case 35:  // #
+      case 46:  // .
+      case 64:  // @
           return 'text/css';
-      case 82: // R
+      case 82:  // R
           return 'image/webp';
       case 137:
         return 'image/png';
