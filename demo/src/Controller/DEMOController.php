@@ -138,12 +138,22 @@ class DEMOController {
     $params = "";
     $pospar = strpos($requri, "?");
     if($pospar !== false) $params = substr($requri, $pospar);
-    if (empty($method)) $method = "GET";
+    if(empty($method)) $method = "GET";
 
-    if (strcmp($method, "GET") == 0) {
+    if(strcmp($method, "GET") == 0) {
+      $cnt = file_get_contents($url . $params);
+      $cty = $this->getHeader($http_response_header, 'Content-Type');
+      $cds = $this->getHeader($http_response_header, 'Content-Disposition');
+      if(empty($cty)) {
+        $cty = $this->getContentType($cnt, 'application/json');
+      }
+
       $response = new Response();
-      $response->setContent(file_get_contents($url . $params));
-      $response->headers->set('Content-Type', 'application/json');
+      $response->setContent($cnt);
+      $response->headers->set('Content-Type', $cty);
+      if(!empty($cds)) {
+        $response->headers->set('Content-Disposition', $cds);
+      }
 
       return $response;
     }
@@ -158,9 +168,19 @@ class DEMOController {
 
       $context  = stream_context_create($opts);
 
+      $cnt = file_get_contents($url . $params, false, $context);
+      $cty = $this->getHeader($http_response_header, 'Content-Type');
+      $cds = $this->getHeader($http_response_header, 'Content-Disposition');
+      if(empty($cty)) {
+        $cty = $this->getContentType($cnt, 'application/json');
+      }
+
       $response = new Response();
-      $response->setContent(file_get_contents($url . $params, false, $context));
-      $response->headers->set('Content-Type', 'application/json');
+      $response->setContent($cnt);
+      $response->headers->set('Content-Type', $cty);
+      if(!empty($cds)) {
+        $response->headers->set('Content-Disposition', $cds);
+      }
 
       return $response;
     }
@@ -173,11 +193,35 @@ class DEMOController {
     $pospar = strpos($requri, "?");
     if($pospar !== false) $params = substr($requri, $pospar);
 
+    $cnt = file_get_contents($url . '/' . $fileName . $params);
+    $cty = $this->getHeader($http_response_header, 'Content-Type');
+    $cds = $this->getHeader($http_response_header, 'Content-Disposition');
+    if(empty($cty)) {
+      $cty = $this->getContentTypeByName($fileName, 'text/html');
+    }
+
     $response = new Response();
-    $response->setContent(file_get_contents($url . '/' . $fileName . $params));
-    $response->headers->set('Content-Type',  $this->getContentTypeByName($fileName, 'text/html'));
+    $response->setContent($cnt);
+    $response->headers->set('Content-Type',  $cty);
+    if(!empty($cds)) {
+      $response->headers->set('Content-Disposition', $cds);
+    }
 
     return $response;
+  }
+
+  private function getHeader($headers, $name) {
+     if(!isset($headers)) {
+       return '';
+     }
+     $h = $name . ': ';
+     $l = strlen($h);
+     foreach($headers as $value) {
+       if(str_starts_with($value, $h)) {
+         return substr($value, $l);
+       }
+     }
+     return '';
   }
 
   private function getContentTypeByName($fileName, $defval = 'application/json') {
