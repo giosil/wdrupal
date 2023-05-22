@@ -202,7 +202,7 @@ class DEMOController {
 
     $response = new Response();
     $response->setContent($cnt);
-    $response->headers->set('Content-Type',  $cty);
+    $response->headers->set('Content-Type', $cty);
     if(!empty($cds)) {
       $response->headers->set('Content-Disposition', $cds);
     }
@@ -308,10 +308,19 @@ class DEMOController {
   }
 
   private function _mock(Request &$request, $url) {
+    $cnt = file_get_contents($url);
+    $cty = $this->getHeader($http_response_header, 'Content-Type');
+    $cds = $this->getHeader($http_response_header, 'Content-Disposition');
+    if(empty($cty)) {
+      $cty = $this->getContentTypeByName($url, 'application/json');
+    }
 
     $response = new Response();
-    $response->setContent(file_get_contents($url));
-    $response->headers->set('Content-Type', 'application/json');
+    $response->setContent($cnt);
+    $response->headers->set('Content-Type', $cty);
+    if(!empty($cds)) {
+      $response->headers->set('Content-Disposition', $cds);
+    }
 
     return $response;
   }
