@@ -10,6 +10,7 @@ Drupal modules collection
 - demo: Demo WUX GUI (WUX module required)
 	- http://localhost:8090/demo/index (Example of WUX GUI) 
 	- http://localhost:8090/demo/map (Example of WUX OpenLayers Component)
+- themes: Drupal themes collection
 
 ## Test
 
