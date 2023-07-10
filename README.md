@@ -1,6 +1,6 @@
 # WDrupal 
 
-Drupal modules collection
+Drupal modules and themes collection
 
 - bsit: Drupal theme based on Bootstrap Italia
 - olm: OpenLayers module
