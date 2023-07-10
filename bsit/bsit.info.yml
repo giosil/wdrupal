@@ -1,0 +1,21 @@
+name: BSIT
+type: theme
+description: 'Bootstrap Italia.'
+package: Core
+base theme: stable
+core_version_requirement: ^8.8 || ^9
+
+libraries:
+  - core/normalize
+  - bsit/global
+
+regions:
+  header: Header
+  help: Help
+  page_top: 'Page top'
+  page_bottom: 'Page bottom'
+  highlighted: Highlighted
+  content: Content
+  sidebar_first: 'Sidebar first'
+  sidebar_second: 'Sidebar second'
+  footer: Footer

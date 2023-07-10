@@ -2,15 +2,16 @@
 
 Drupal modules collection
 
+- bsit: Drupal theme based on Bootstrap Italia
 - olm: OpenLayers module
 	- http://localhost:8090/olm/index (Example of OpenLayers Map)
 	- http://localhost:8090/olm/rss (Example of service proxy)
 - wux: WUX module (Bootstrap theme required)
 	- http://localhost:8090/wux/index (Library)
+	- wux_bsit.zip sources of wux modified for bsit
 - demo: Demo WUX GUI (WUX module required)
 	- http://localhost:8090/demo/index (Example of WUX GUI) 
 	- http://localhost:8090/demo/map (Example of WUX OpenLayers Component)
-- themes: Drupal themes collection
 
 ## Test
 
