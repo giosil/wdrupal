@@ -5,7 +5,11 @@
   </header>
 {% endif %}
 
+{% if is_front %}
+  <div id="main" class="container-fluid my-4">
+{% else %}
   <div id="main" class="container my-4">
+{% endif %}
     <section id="content">
       <div id="content-header">
         {{ page.breadcrumb }}
