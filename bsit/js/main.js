@@ -31,3 +31,29 @@ notify:(n)=>{
 	document.getElementById('notification-center').append(d.firstChild);
 	setTimeout(()=>{document.getElementById('notification-center').innerHTML='';}, n.duration || 5000);
 }};
+var _bsitLogout=false;
+function bsitCheckAuth(){
+	var c=document.body.getAttribute('class');
+	if(c && c.indexOf('role--authenticated') >= 0) {
+		var q=document.querySelectorAll('a[href="/user/login"]');
+		q.forEach(function(l){
+			l.addEventListener('click',function(e){_bsitLogout=true;});
+			l.setAttribute('href','/user/logout');
+			l.setAttribute('target','_blank');
+			l.setAttribute('title','Esci');
+			l.innerText='Esci';
+		});
+		return true;
+	}
+	var q=document.querySelectorAll('a[href="/user/logout"]');
+	q.forEach(function(l){
+		l.addEventListener('click',function(e){_bsitLogout=false;});
+		l.setAttribute('href','/user/login');
+		l.setAttribute('target','_self');
+		l.setAttribute('title','Accedi');
+		l.innerText='Accedi';
+	});
+	return false;
+}
+bsitCheckAuth();
+window.addEventListener('focus',function(e){if(_bsitLogout)location.reload();});
