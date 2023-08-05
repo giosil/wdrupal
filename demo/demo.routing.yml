@@ -14,6 +14,13 @@ demo.map:
   requirements: 
     _permission: 'access content'
 
+demo.consent:
+  path: '/demo/consent/{value}'
+  defaults:
+    _controller: '\Drupal\demo\Controller\SIRAController::consent'
+  requirements: 
+    _permission: 'access content'
+
 demo.get_temi:
   path: '/demo/api/get-temi'
   defaults: 

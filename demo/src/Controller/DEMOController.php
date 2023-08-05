@@ -21,6 +21,116 @@ class DEMOController {
     );
   }
   
+  public function consent(Request $request, string $value) {
+    $data = [];
+    
+    $user = \Drupal::currentUser();
+    if(!$user->isAuthenticated()) {
+      $this->_log_info('consent (not authenticated)');
+      return new JsonResponse($data);
+    }
+    
+    $name = $user->getAccountName();
+    if(is_null($name)) {
+      $this->_log_info('consent (username is null)');
+      return new JsonResponse($data);
+    }
+    
+    $this->_log_info('consent ' . $name . ' ' . $value);
+    
+    $this->createConsentsTable();
+    
+    $db = \Drupal::database();
+    
+    if(is_numeric($value)) {
+      $iv = intval($value);
+      
+      if($iv < 0) {
+        $resDel = $db->delete('app_consents')
+          ->condition('username', $name, '=')
+          ->execute();
+        // Check result
+        if ($resDel) {
+          $this->_log_info('consent ' . $name . ' ' . $value . ' (deleted)');
+        }
+        else {
+          $this->_log_warn('consent ' . $name . ' ' . $value . ' (NOT deleted)');
+        }
+        return new JsonResponse($data);
+      }
+      
+      // Check record by username 
+      $count = $db->select('app_consents')->condition('username', $name, '=')
+        ->countQuery()
+        ->execute()
+        ->fetchField();
+      
+      $this->_log_info('consent ' . $name . ' ' . $value . ' (count = ' . $count . ')');
+      
+      if($count > 0) {
+        // Update
+        $resUpd = $db->update('app_consents')
+          ->fields(['consent' => $iv, 'updtime' => time()])
+          ->condition('username', $name, '=')
+          ->execute();
+        
+        // Check result
+        if ($resUpd) {
+          $this->_log_info('consent ' . $name . ' ' . $value . ' (updated)');
+        }
+        else {
+          $this->_log_warn('consent ' . $name . ' ' . $value . ' (NOT updated)');
+        }
+      }
+      else {
+        // Insert
+        $resIns = $db->insert('app_consents')
+          ->fields(["username" => $name, "consent" => $iv, "instime" => time(), "updtime" => time()])
+          ->execute();
+        
+        // Check result
+        if ($resIns) {
+          $this->_log_info('consent ' . $name . ' ' . $value . ' (inserted)');
+        }
+        else {
+          $this->_log_warn('consent ' . $name . ' ' . $value . ' (NOT inserted)');
+        }
+      }
+    }
+    
+    // Read
+    $sql = "SELECT username,consent,instime,updtime FROM app_consents WHERE username='" . str_replace("'", "''" , $name) . "'";
+    $res = $db->query($sql)->fetchAll();
+    foreach ($res as $r) {
+      $data[] = [
+        'username' => $r->username, 'consent' => $r->consent, 'instime' => $r->instime, 'updtime' => $r->updtime
+      ];
+    }
+    
+    return new JsonResponse($data);
+  }
+  
+  public function createConsentsTable() {
+    $db = \Drupal::database();
+    if (!$db->schema()->tableExists('app_consents')) {
+      // Create table
+      $schema = [
+        'fields' => [
+          'username' => ['type' => 'varchar',   'length'   => 255,  'not null' => TRUE],
+          'consent'  => ['type' => 'int',       'length'   => 1,    'default'  => 0],
+          'instime'  => ['type' => 'timestamp', 'not null' => TRUE],
+          'updtime'  => ['type' => 'timestamp', 'not null' => TRUE]
+        ],
+        'primary key' => ['username']
+      ];
+      $db->schema()->createTable('app_consents', $schema);
+      // Insert default record
+      $db->insert('app_consents')
+        ->fields(["username" => "default", "consent" => 1, "instime" => time(), "updtime" => time()])
+        ->execute();
+    }
+  }
+  
   public function upload(Request $request) {
     $response = new Response();
     $response->headers->set('Content-Type', 'application/json');
