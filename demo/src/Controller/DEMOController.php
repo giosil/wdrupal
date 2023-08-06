@@ -130,7 +130,42 @@ class DEMOController {
         ->execute();
     }
   }
-  
+
+  public function files0(string $fileName, Request $request) {
+    $filePath = '/data01' . '/' . $fileName;
+    if(!file_exists($filePath)) {
+      return new Response('', 404);
+    }
+    $mime = mime_content_type($filePath);
+    if($mime === false) {
+      return new Response('', 404);
+    }
+    $response = new Response();
+    $response->headers->set('Content-Type', $mime);
+    $response->setContent(file_get_contents($filePath));
+    return $response;
+  }
+
+  public function files1(string $subfolder, string $fileName, Request $request) {
+    if($subfolder == '__') {
+      $filePath = '/opt/drupal/web/sites/default/files' . '/' . $fileName;
+    }
+    else {
+      $filePath = '/data01' . '/' . $subfolder . '/' . $fileName;
+    }
+    if(!file_exists($filePath)) {
+      return new Response('', 404);
+    }
+    $mime = mime_content_type($filePath);
+    if($mime === false) {
+      return new Response('', 404);
+    }
+    $response = new Response();
+    $response->headers->set('Content-Type', $mime);
+    $response->setContent(file_get_contents($filePath));
+    return $response;
+  }
+
   public function upload(Request $request) {
     $response = new Response();
     $response->headers->set('Content-Type', 'application/json');
@@ -186,47 +221,47 @@ class DEMOController {
     return $response;
   }
 
-  public function files0(string $fileName, Request $request) {
-    $filePath = '/data01' . '/' . $fileName;
-    if(!file_exists($filePath)) {
-      return new Response('', 404);
-    }
-    $mime = mime_content_type($filePath);
-    if($mime === false) {
-      return new Response('', 404);
-    }
-    $response = new Response();
-    $response->headers->set('Content-Type', $mime);
-    $response->setContent(file_get_contents($filePath));
-    return $response;
-  }
-
-  public function files1(string $subfolder, string $fileName, Request $request) {
-    $filePath = '/data01' . '/' . $subfolder . '/' . $fileName;
-    if(!file_exists($filePath)) {
-      return new Response('', 404);
-    }
-    $mime = mime_content_type($filePath);
-    if($mime === false) {
-      return new Response('', 404);
-    }
-    $response = new Response();
-    $response->headers->set('Content-Type', $mime);
-    $response->setContent(file_get_contents($filePath));
-    return $response;
-  }
-
-  public function list_files(Request $request) {
+  public function list_files(Request $request, string $subfolder) {
     $destDir = '/data01';
-    $data_files = scandir($destDir);
-    $list_files = '';
-    if(!empty($data_files)) {
-      $list_files = implode(",", $data_files);
+    if($subfolder == '__') {
+      $destDir = '/opt/drupal/web/sites/default/files';
     }
+    else if($subfolder != '_') {
+      $destDir = '/data01' . '/' . $subfolder;
+    }
+    $this->_log_info('list_files ' . $destDir);
 
     $response = new Response();
     $response->headers->set('Content-Type', 'application/json');
-    $json = '{"dir": "' . $destDir . '","files":[' . $list_files . ']}';
+
+    $json = '';
+
+    $sd = scandir($destDir);
+    if(!$sd) {
+      $json = '{"message": "Path ' . $destDir . ' not exists."}';
+    }
+    else {
+      $folders = [];
+      $files = [];
+      foreach ($sd as $name) {
+        if(is_dir($destDir . '/' . $name)) {
+          $folders[] = $name;
+        }
+        else {
+          $files[] = $name;
+        }
+      }
+      $listFolders = '';
+      if(!empty($folders)) {
+        $listFolders = '"' . implode('","', $folders) . '"';
+      }
+      $listFiles = '';
+      if(!empty($files)) {
+        $listFiles = '"' . implode('","', $files) . '"';
+      }
+      $json = '{"dir": "' . $destDir . '","folders":[' . $listFolders . '],"files":[' . $listFiles . ']}';
+    }
+    
     $response->setContent($json);
 
     return $response;

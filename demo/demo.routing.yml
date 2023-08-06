@@ -50,7 +50,7 @@ demo.files1:
     _permission: 'access content'
 
 demo.list_files:
-  path: '/demo/list-files'
+  path: '/demo/list-files/{subfolder}'
   defaults: 
     _controller: '\Drupal\demo\Controller\DEMOController::list_files'
   requirements: 
