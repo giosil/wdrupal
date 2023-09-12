@@ -33,25 +33,27 @@ notify:(n)=>{
 var _bsitLogout=false;
 function bsitCheckAuth(){
 	var c=document.body.getAttribute('class');
+	var a=document.getElementById('bsit-acc');
+	var u=document.getElementById('bsit-usr');
 	if(c && c.indexOf('role--authenticated') >= 0) {
-		var q=document.querySelectorAll('a[href="/user/login"]');
-		q.forEach(function(l){
-			l.addEventListener('click',function(e){_bsitLogout=true;});
-			l.setAttribute('href','/user/logout');
-			l.setAttribute('target','_blank');
-			l.setAttribute('title','Esci');
-			l.innerText='Esci';
-		});
+		if(a){
+			a.addEventListener('click',function(e){_bsitLogout=true;});
+			a.setAttribute('href','/user/logout');
+			a.setAttribute('target','_blank');
+			a.setAttribute('title','Esci');
+			a.innerText='Esci';
+		}
+		if(u)u.style.display='block';
 		return true;
 	}
-	var q=document.querySelectorAll('a[href="/user/logout"]');
-	q.forEach(function(l){
-		l.addEventListener('click',function(e){_bsitLogout=false;});
-		l.setAttribute('href','/user/login');
-		l.setAttribute('target','_self');
-		l.setAttribute('title','Accedi');
-		l.innerText='Accedi';
-	});
+	if(a){
+		a.addEventListener('click',function(e){_bsitLogout=false;});
+		a.setAttribute('href','/user/login');
+		a.setAttribute('target','_self');
+		a.setAttribute('title','Accedi');
+		a.innerText='Accedi';
+	};
+	if(u)u.style.display='none';
 	return false;
 }
 bsitCheckAuth();
