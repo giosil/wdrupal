@@ -57,4 +57,12 @@ function bsitCheckAuth(){
 	return false;
 }
 bsitCheckAuth();
-window.addEventListener('focus',function(e){if(_bsitLogout)location.reload();});
+window.addEventListener('focus',function(e){if(_bsitLogout){
+	var p=window.location.pathname;
+	if(p && p.length > 4 && p.substring(0,5)=='/user') {
+		location.href='/';
+	}
+	else {
+		location.reload();
+	}
+}});
