@@ -12,4 +12,3 @@ olm.rss:
     _controller: '\Drupal\olm\Controller\OLMController::rss'
   requirements: 
     _permission: 'access content'
-

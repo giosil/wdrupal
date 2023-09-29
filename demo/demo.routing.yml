@@ -27,6 +27,7 @@ demo.get_temi:
     _controller: '\Drupal\demo\Controller\DEMOController::api_get_temi'
   requirements: 
     _permission: 'access content'
+  methods: [GET, POST, PATCH, PUT, DELETE]
 
 demo.upload:
   path: '/demo/upload'
