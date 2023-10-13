@@ -15,11 +15,49 @@ Drupal modules and themes collection
 
 ## Test
 
-docker pull drupal
+`docker pull drupal`
 
-docker run --name dew-drupal -p 8090:80 -d drupal
+`docker run --name dew-drupal -p 8090:80 -d drupal`
 
-docker exec -it dew-drupal /bin/bash
+`docker exec -it dew-drupal /bin/bash`
+
+## Install sqlite and Drush
+
+`apt update`
+
+`apt install sqlite3`
+
+`composer require drush/drush`
+
+`drush sql:cli`
+
+```sql
+.tables
+
+pragma table_info('node');
+
+.header on
+
+.mode column 
+
+select * from node;
+
+select nid,vid,type,title from node_field_data;
+
+select * from path_alias;
+
+.quit
+```
+
+To export data:
+
+```sql
+.output /opt/drupal/table.sql
+
+.dump [table]
+
+.quit
+```
 
 ## Contributors
 
