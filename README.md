@@ -59,6 +59,53 @@ To export data:
 .quit
 ```
 
+## Modify init script
+
+The entrypoint of Drupal container is:
+
+/usr/local/bin/docker-php-entrypoint
+
+```bash
+#!/bin/sh
+set -e
+
+# first arg is `-f` or `--some-option`
+if [ "${1#-}" != "$1" ]; then
+  set -- apache2-foreground "$@"
+fi
+
+exec "$@"
+```
+
+You can add your init script after `set -e`. Below is an example.
+
+```bash
+# [DEW] check hosts
+if grep -q 'wdrupal.dew.org' '/etc/hosts'; then
+  echo 'wdrupal.dew.org is mapped in /etc/hosts'
+else
+  echo 'wdrupal.dew.org is NOT mapped in /etc/hosts'
+  echo '10.2.69.49 wdrupal.dew.org' >> /etc/hosts
+  echo 'wdrupal.dew.org added in /etc/hosts'
+fi
+
+# [DEW] check data folder
+data_folder="/data01"
+if [ -d "$data_folder" ]; then
+  user_folder=$(stat -c %U "$data_folder")
+  if [ "$user_folder" = "root" ]; then
+    echo "$data_folder belongs to root"
+    chmod -R a+rwx "$data_folder"
+  else
+    echo "$data_folder does NOT belong to root"
+  fi
+else
+  echo "The folder $data_folder does NOT exist"
+  mkdir -p "$data_folder"
+  chmod -R a+rwx "$data_folder"
+fi
+```
+
 ## Contributors
 
 * [Giorgio Silvestris](https://github.com/giosil)
