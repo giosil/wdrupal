@@ -85,7 +85,7 @@ if grep -q 'wdrupal.dew.org' '/etc/hosts'; then
   echo 'wdrupal.dew.org is mapped in /etc/hosts'
 else
   echo 'wdrupal.dew.org is NOT mapped in /etc/hosts'
-  echo '10.2.69.49 wdrupal.dew.org' >> /etc/hosts
+  echo '10.2.2.2 wdrupal.dew.org' >> /etc/hosts
   echo 'wdrupal.dew.org added in /etc/hosts'
 fi
 
