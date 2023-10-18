@@ -189,6 +189,115 @@ var GUI;
         return Chart;
     }(WUX.WComponent));
     GUI.Chart = Chart;
+    var PieChart = (function (_super) {
+        __extends(PieChart, _super);
+        function PieChart(id, type, classStyle, style, attributes) {
+            var _this = _super.call(this, id ? id : '*', 'PieChart', type, classStyle, style, attributes) || this;
+            _this.labels = false;
+            _this.forceOnChange = true;
+            return _this;
+        }
+        PieChart.prototype.updateState = function (nextState) {
+            _super.prototype.updateState.call(this, nextState);
+            this.source = [];
+            this.series = [];
+            if (!this.state)
+                return;
+            var d = this.state.data;
+            if (!d || !d.length)
+                return;
+            var v = this.state.values;
+            if (!v)
+                return;
+            var a = this.state.arguments;
+            if (!a)
+                this.state.series;
+            if (!a)
+                return;
+            var arrayA = [];
+            var mapAV = {};
+            var tot = 0;
+            for (var _i = 0, d_4 = d; _i < d_4.length; _i++) {
+                var r = d_4[_i];
+                var val = WUtil.getNumber(r, v);
+                tot += val;
+                var arg = WUtil.getString(r, a);
+                if (!arg)
+                    continue;
+                if (arrayA.indexOf(arg) < 0) {
+                    arrayA.push(arg);
+                }
+                var pv = WUtil.getNumber(mapAV, arg);
+                mapAV[arg] = pv + val;
+            }
+            for (var _a = 0, arrayA_2 = arrayA; _a < arrayA_2.length; _a++) {
+                var arg = arrayA_2[_a];
+                var val = WUtil.getNumber(mapAV, arg);
+                var prc = tot ? val * 100 / tot : 0;
+                this.source.push({ "a": arg, "v": WUtil.round2(prc) });
+            }
+            this.series.push({
+                argumentField: "a",
+                valueField: "v",
+                label: {
+                    visible: this.labels,
+                    connector: {
+                        visible: this.labels,
+                        width: 1
+                    }
+                }
+            });
+        };
+        PieChart.prototype.componentDidMount = function () {
+            if (this._tooltip) {
+                this.root.attr('title', this._tooltip);
+            }
+            if (!this.title)
+                this.title = '';
+            if (!this.source)
+                this.source = [];
+            if (!this.series)
+                this.series = [];
+            if (!this.props)
+                this.props = 'pie';
+            var opt = {
+                dataSource: this.source,
+                series: this.series,
+                title: this.title,
+                legend: {
+                    verticalAlignment: 'bottom',
+                    horizontalAlignment: 'center',
+                },
+                export: {
+                    enabled: true,
+                },
+                tooltip: {
+                    enabled: true,
+                }
+            };
+            if (this.palette) {
+                opt.palette = this.palette;
+            }
+            if (this.subTitle) {
+                opt.title = {
+                    text: this.title,
+                    subtitle: {
+                        text: this.subTitle
+                    }
+                };
+            }
+            $('#' + this.id).dxPieChart(opt);
+        };
+        PieChart.prototype.getInstance = function (copt) {
+            if (!this.mounted)
+                return null;
+            if (copt)
+                this.root.dxPieChart(copt);
+            return this.root.dxPieChart('instance');
+        };
+        return PieChart;
+    }(WUX.WComponent));
+    GUI.PieChart = PieChart;
 })(GUI || (GUI = {}));
 var GUI;
 (function (GUI) {
@@ -913,6 +1022,7 @@ var GUI;
 })(GUI || (GUI = {}));
 var GUI;
 (function (GUI) {
+    var WUtil = WUX.WUtil;
     var GUIUpload = (function (_super) {
         __extends(GUIUpload, _super);
         function GUIUpload() {
@@ -923,6 +1033,7 @@ var GUI;
             r += '<div id="divUpl">';
             r += '<form id="frmUpl" action="/demo/upload" method="post" enctype="multipart/form-data">';
             r += '<input type="file" name="datafile" id="datafile">';
+            r += '<input type="hidden" name="addtime" id="addtime" value="0">';
             r += '<hr>';
             r += '<input type="submit" value="Upload">';
             r += '</form>';
@@ -962,5 +1073,171 @@ var GUI;
         return GUIUpload;
     }(WUX.WComponent));
     GUI.GUIUpload = GUIUpload;
+    var ListFiles = (function (_super) {
+        __extends(ListFiles, _super);
+        function ListFiles(id, classStyle, style, attributes) {
+            var _this = _super.call(this, id ? id : '*', 'ListFiles', '', classStyle, style, attributes) || this;
+            _this.astyle = 'text-decoration: none;font-size: 1.4rem;cursor: pointer;';
+            _this.forceOnChange = true;
+            return _this;
+        }
+        ListFiles.prototype.load = function (path) {
+            var _this = this;
+            this.path = path;
+            if (!this.path)
+                this.path = 'doc';
+            this.props = '/demo/files/' + this.path;
+            this.rmurl = '/demo/del/' + this.path;
+            $.ajax({
+                type: 'GET',
+                url: '/demo/list-files/' + path
+            }).done(function (res) {
+                if (!res || res.message) {
+                    _this.setState([]);
+                }
+                else {
+                    _this.setState(res.files);
+                }
+            }).fail(function (jqxhr, status, error) {
+                console.log('response: ' + jqxhr.responseText + ', status: ' + status + ', error: ' + error);
+                WUX.showError('Errore nel caricamento della cartella.');
+            });
+        };
+        ListFiles.prototype.render = function () {
+            this.files = [];
+            if (!this.path)
+                this.path = 'doc';
+            if (!this.props)
+                this.props = '/demo/files/' + this.path;
+            if (!this.rmurl)
+                this.rmurl = '/demo/del/' + this.path;
+            if (!this.astyle)
+                this.astyle = '';
+            var r = '';
+            var isAdmin = false;
+            var u = GUI.getUserLogged();
+            if (u) {
+                isAdmin = $('body').hasClass('role--administrator');
+                if (isAdmin) {
+                    r += '<form id="' + this.subId('frm') + '" action="/demo/upload" method="post" enctype="multipart/form-data"><div class="row">';
+                    r += '<div class="form-group col-md-5"><input class="form-control" type="file" name="datafile" id="datafile" required></div>';
+                    r += '<input type="hidden" name="subfolder" id="subfolder" value="' + this.path + '">';
+                    r += '<input type="hidden" name="addtime" id="addtime" value="0">';
+                    r += '<div class="form-group col-md-7">';
+                    r += '<button type="submit" class="btn btn-primary">Carica il file</button> &nbsp;&nbsp;';
+                    r += '<button type="reset" class="btn btn-secondary">Annulla</button>';
+                    r += '</div></div></form>';
+                }
+            }
+            if (this.state && this.state.length) {
+                this.state.sort();
+                for (var _i = 0, _a = this.state; _i < _a.length; _i++) {
+                    var item = _a[_i];
+                    var ico = WUX.buildIcon(this.getIcon(item));
+                    if (!ico)
+                        continue;
+                    this.files.push(item);
+                    r += '<a href="' + this.props + '/' + item + '" target="_blank" style="' + this.astyle + '" title="Vedi file ' + item + '">' + ico + ' ' + item + '</a>';
+                    if (isAdmin) {
+                        var i = this.files.length - 1;
+                        var d = '<a id="del_' + i + '" style="' + this.astyle + 'color:#800000;">' + WUX.buildIcon('fa-trash') + ' Elimina</a>';
+                        r += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + d + '<br>';
+                    }
+                    else {
+                        r += '<br>';
+                    }
+                }
+            }
+            else {
+                r += '<h4>Nessun file disponibile al momento.</h4>';
+            }
+            return this.buildRoot(this.rootTag, r);
+        };
+        ListFiles.prototype.componentDidMount = function () {
+            var _this = this;
+            this.root.on('click', 'a', function (e) {
+                var id = WUX.getId(e.currentTarget);
+                if (!id)
+                    return;
+                var r = id.indexOf('_');
+                if (r < 0)
+                    return;
+                if (id.substring(0, r) != 'del')
+                    return;
+                var x = WUtil.toNumber(id.substring(r + 1));
+                if (!_this.files || _this.files.length <= x)
+                    return;
+                var f = _this.files[x];
+                WUX.confirm('Si vuole eliminare il file ' + f + '?', function (cnf) {
+                    if (!cnf)
+                        return;
+                    $.ajax({
+                        type: 'GET',
+                        url: _this.rmurl + '/' + _this.files[x]
+                    }).done(function (res) {
+                        _this.load(_this.path);
+                    }).fail(function (jqxhr, status, error) {
+                        console.log('response: ' + jqxhr.responseText + ', status: ' + status + ', error: ' + error);
+                        WUX.showError('Errore durante la cancellazione del file.');
+                    });
+                });
+            });
+            var frm = document.getElementById(this.subId('frm'));
+            if (!frm)
+                return;
+            frm.addEventListener("submit", function (e) {
+                e.preventDefault();
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "/demo/upload", true);
+                xhr.onload = function () {
+                    if (xhr.status == 200) {
+                        console.log(xhr.responseText);
+                        WUX.showSuccess('File caricato.');
+                        _this.load(_this.path);
+                    }
+                    else {
+                        WUX.showError('Errore durante l\'upload del file.');
+                    }
+                };
+                var data = new FormData(frm);
+                xhr.send(data);
+            });
+        };
+        ListFiles.prototype.getIcon = function (file) {
+            if (!file)
+                return '';
+            var s = file.lastIndexOf('.');
+            if (s < 0)
+                return '';
+            if (s[0] == '.')
+                return '';
+            var e = file.substring(s + 1).toLowerCase();
+            if (e == 'pdf')
+                return 'fa-file-pdf-o';
+            if (e == 'xls' || e == 'xlsx')
+                return 'fa-file-excel-o';
+            if (e == 'doc' || e == 'docx')
+                return 'fa-file-word-o';
+            if (e == 'ppt' || e == 'pptx')
+                return 'fa-file-powerpoint-o';
+            if (e == 'txt' || e == 'dat' || e == 'csv')
+                return 'fa-file-text-o';
+            if (e == 'png' || e == 'jpeg' || e == 'jpg' || e == 'bmp' || e == 'gif' || e == 'tiff' || e == 'webp')
+                return 'fa-file-image-o';
+            if (e == 'xps')
+                return 'fa-file-o';
+            if (e == 'gpkg' || e == 'json' || e == 'xml' || e == 'html' || e == 'htm')
+                return 'fa-file-code-o';
+            if (e == 'mp4' || e == 'avi')
+                return 'fa-file-video-o';
+            if (e == 'mp3' || e == 'wav' || e == 'aac')
+                return 'fa-file-audio-o';
+            if (e == 'zip' || e == 'tar' || e == 'gz')
+                return 'fa-file-archive-o';
+            return '';
+        };
+        return ListFiles;
+    }(WUX.WComponent));
+    GUI.ListFiles = ListFiles;
 })(GUI || (GUI = {}));
 //# sourceMappingURL=demo.js.map

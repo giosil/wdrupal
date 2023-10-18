@@ -50,6 +50,37 @@ demo.files1:
   requirements: 
     _permission: 'access content'
 
+demo.files2:
+  path: '/demo/files/{subfolder}/{subfolder2}/{fileName}'
+  defaults:
+    _controller: '\Drupal\demo\Controller\DEMOController::files2'
+  requirements: 
+    _permission: 'access content'
+
+demo.del0:
+  path: '/demo/del/{fileName}'
+  defaults:
+    _controller: '\Drupal\demo\Controller\DEMOController::del0'
+  requirements:
+    _access: 'TRUE' 
+    _permission: 'access content'
+
+demo.del1:
+  path: '/demo/del/{subfolder}/{fileName}'
+  defaults:
+    _controller: '\Drupal\demo\Controller\DEMOController::del1'
+  requirements:
+    _access: 'TRUE'
+    _permission: 'access content'
+
+demo.del2:
+  path: '/demo/del/{subfolder}/{subfolder2}/{fileName}'
+  defaults:
+    _controller: '\Drupal\demo\Controller\DEMOController::del2'
+  requirements:
+    _access: 'TRUE'
+    _permission: 'access content'
+
 demo.list_files:
   path: '/demo/list-files/{subfolder}'
   defaults: 

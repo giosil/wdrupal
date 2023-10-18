@@ -166,14 +166,113 @@ class DEMOController {
     return $response;
   }
 
-  public function upload(Request $request) {
+  public function files2(string $subfolder, string $subfolder2, string $fileName, Request $request) {
+    if($subfolder == '__') {
+      $filePath = '/opt/drupal/web/sites/default/files' . '/' . $subfolder2 . '/' . $fileName;
+    }
+    else {
+      $filePath = '/data01' . '/' . $subfolder . '/' . $subfolder2 . '/' . $fileName;
+    }
+    if(!file_exists($filePath)) {
+      return new Response('', 404);
+    }
+    $mime = mime_content_type($filePath);
+    if($mime === false) {
+      return new Response('', 404);
+    }
+    $response = new Response();
+    $response->headers->set('Content-Type', $mime);
+    $response->setContent(file_get_contents($filePath));
+    return $response;
+  }
+
+  public function del0(string $fileName, Request $request) {
+    $filePath = '/data01' . '/' . $fileName;
+    $success = FALSE;
+    $message = '';
+    $user = \Drupal::currentUser();
+    if($user->isAuthenticated()) {
+      if(file_exists($filePath)) {
+        $success = unlink($filePath);
+        if(!$success) $message = 'File not deleted.';
+      }
+      else {
+        $message = 'File ' . $filePath . 'does not exist.';
+      }
+    }
+    else {
+      $message = 'Not allowed';
+    }
     $response = new Response();
     $response->headers->set('Content-Type', 'application/json');
+    $response->setContent('{"success":' . strval($success) . ',"message":"' . $message . '"}');
+    return $response;
+  }
+
+  public function del1(string $subfolder, string $fileName, Request $request) {
+    if($subfolder == '__') {
+      $filePath = '/opt/drupal/web/sites/default/files' . '/' . $fileName;
+    }
+    else {
+      $filePath = '/data01' . '/' . $subfolder . '/' . $fileName;
+    }
+    $success = FALSE;
+    $message = '';
+    $user = \Drupal::currentUser();
+    if($user->isAuthenticated()) {
+      if(file_exists($filePath)) {
+        $success = unlink($filePath);
+        if(!$success) $message = 'File not deleted.';
+      }
+      else {
+        $message = 'File ' . $filePath . 'does not exist.';
+      }
+    }
+    else {
+      $message = 'Not allowed';
+    }
+    $response = new Response();
+    $response->headers->set('Content-Type', 'application/json');
+    $response->setContent('{"success":' . strval($success) . ',"message":"' . $message . '"}');
+    return $response;
+  }
+
+  public function del2(string $subfolder, string $subfolder2, string $fileName, Request $request) {
+    if($subfolder == '__') {
+      $filePath = '/opt/drupal/web/sites/default/files' . '/' . $subfolder2 . '/' . $fileName;
+    }
+    else {
+      $filePath = '/data01' . '/' . $subfolder . '/' . $subfolder2 . '/' . $fileName;
+    }
+    $success = FALSE;
+    $message = '';
+    $user = \Drupal::currentUser();
+    if($user->isAuthenticated()) {
+      if(file_exists($filePath)) {
+        $success = unlink($filePath);
+        if(!$success) $message = 'File not deleted.';
+      }
+      else {
+        $message = 'File ' . $filePath . 'does not exist.';
+      }
+    }
+    else {
+      $message = 'Not allowed';
+    }
+    $response = new Response();
+    $response->headers->set('Content-Type', 'application/json');
+    $response->setContent('{"success":' . strval($success) . ',"message":"' . $message . '"}');
+    return $response;
+  }
+
+  public function upload(Request $request) {
+    $response = new Response();
     $json = '{';
 
     try {
       $uplFile = $request->files->get('datafile');
-      $subFolder = $request->request->get('subfolder');;
+      $subFolder = $request->request->get('subfolder');
+      $addTime = $request->request->get('addtime');
 
       if(is_null($uplFile)) {
         $json = $json . '"message": "datafile absent"';
@@ -201,7 +300,12 @@ class DEMOController {
         $json .= '"maxFilesize": ' . $uplFile->getMaxFilesize() . ',';
 
         // Move file in destination directory
-        $destFile = $uplFile->move($destDir, date('Ymd_His') . '_' . $uplFile->getClientOriginalName());
+        if($addTime == '1') {
+          $destFile = $uplFile->move($destDir, date('Ymd_His') . '_' . $uplFile->getClientOriginalName());
+        }
+        else {
+          $destFile = $uplFile->move($destDir, $uplFile->getClientOriginalName());
+        }
 
         // Destination file
         $json .= '"filename": "' . $destFile->getFilename() . '",';
@@ -216,8 +320,8 @@ class DEMOController {
     }
     $json = $json . '}';
 
+    $response->headers->set('Content-Type', 'application/json');
     $response->setContent($json);
-
     return $response;
   }
 
@@ -231,11 +335,34 @@ class DEMOController {
     }
     $this->_log_info('list_files ' . $destDir);
 
+    $json = $this->json_scandir($destDir, '/sira/files/' . $subfolder);
+
     $response = new Response();
     $response->headers->set('Content-Type', 'application/json');
+    $response->setContent($json);
+    return $response;
+  }
 
+  public function list_files2(Request $request, string $subfolder, string $subfolder2) {
+    $destDir = '/data01';
+    if($subfolder == '__') {
+      $destDir = '/opt/drupal/web/sites/default/files/' . $subfolder2;
+    }
+    else if($subfolder != '_') {
+      $destDir = '/data01' . '/' . $subfolder . '/' . $subfolder2;
+    }
+    $this->_log_info('list_files2 ' . $destDir);
+
+    $json = $this->json_scandir($destDir, '/sira/files/' . $subfolder . '/' . $subfolder2);
+
+    $response = new Response();
+    $response->headers->set('Content-Type', 'application/json');
+    $response->setContent($json);
+    return $response;
+  }
+
+  public function json_scandir(string $destDir, string $baseurl) {
     $json = '';
-
     $sd = scandir($destDir);
     if(!$sd) {
       $json = '{"message": "Path ' . $destDir . ' not exists."}';
@@ -259,14 +386,11 @@ class DEMOController {
       if(!empty($files)) {
         $listFiles = '"' . implode('","', $files) . '"';
       }
-      $json = '{"dir": "' . $destDir . '","folders":[' . $listFolders . '],"files":[' . $listFiles . ']}';
+      $json = '{"baseurl":"' . $baseurl . '","dir":"' . $destDir . '","folders":[' . $listFolders . '],"files":[' . $listFiles . ']}';
     }
-    
-    $response->setContent($json);
-
-    return $response;
+    return $json;
   }
-
+  
   public function api_get_temi(Request $request) {
     if(static::cfgMock()) {
       return $this->_mock($request, static::cfgMockUrl() . "get-temi");

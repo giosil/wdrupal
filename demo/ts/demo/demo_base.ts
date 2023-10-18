@@ -20,4 +20,12 @@ namespace GUI {
 		if(!t.length) return '';
 		return t.text();
 	}
+	
+	export interface AppFolder {
+		message?: string;
+		baseurl?: string;
+		dir?: string;
+		folders?: string[];
+		files?: string[];
+	}
 }

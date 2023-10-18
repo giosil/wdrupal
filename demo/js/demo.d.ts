@@ -1,6 +1,13 @@
 declare namespace GUI {
     function getPageComponent(): WUX.WComponent;
     function getUserLogged(): string;
+    interface AppFolder {
+        message?: string;
+        baseurl?: string;
+        dir?: string;
+        folders?: string[];
+        files?: string[];
+    }
 }
 declare namespace GUI {
     export interface ChartData {
@@ -29,6 +36,18 @@ declare namespace GUI {
         protected updateState(nextState: ChartData): void;
         protected componentDidMount(): void;
         getInstance(copt?: DevExpress.viz.dxChartOptions): DevExpress.viz.dxChart;
+    }
+    export class PieChart extends WUX.WComponent<'donut' | 'doughnut' | 'pie', ChartData> {
+        title: string;
+        subTitle: string;
+        palette: any;
+        source: any[];
+        series: Array<DevExpress.viz.PieChartSeries>;
+        labels: boolean;
+        constructor(id?: string, type?: 'donut' | 'doughnut' | 'pie', classStyle?: string, style?: string | WUX.WStyle, attributes?: string | object);
+        protected updateState(nextState: ChartData): void;
+        protected componentDidMount(): void;
+        getInstance(copt?: DevExpress.viz.dxPieChartOptions): DevExpress.viz.dxPieChart;
     }
     export {};
 }
@@ -141,5 +160,16 @@ declare namespace GUI {
     class GUIUpload extends WUX.WComponent {
         protected render(): string;
         protected componentDidMount(): void;
+    }
+    class ListFiles extends WUX.WComponent<string, string[]> {
+        protected path: string;
+        protected rmurl: string;
+        protected files: string[];
+        protected astyle: string;
+        constructor(id?: string, classStyle?: string, style?: string | WUX.WStyle, attributes?: string | object);
+        load(path: string): void;
+        protected render(): string;
+        protected componentDidMount(): void;
+        protected getIcon(file: string): "" | "fa-file-pdf-o" | "fa-file-excel-o" | "fa-file-word-o" | "fa-file-powerpoint-o" | "fa-file-text-o" | "fa-file-image-o" | "fa-file-o" | "fa-file-code-o" | "fa-file-video-o" | "fa-file-audio-o" | "fa-file-archive-o";
     }
 }
