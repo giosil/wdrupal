@@ -95,13 +95,18 @@ if [ -d "$data_folder" ]; then
   user_folder=$(stat -c %U "$data_folder")
   if [ "$user_folder" = "root" ]; then
     echo "$data_folder belongs to root"
+    echo "change $data_folder permissions..."
     chmod -R a+rwx "$data_folder"
   else
     echo "$data_folder does NOT belong to root"
+    echo "change $data_folder permissions..."
+    chmod -R a+rwx "$data_folder"
   fi
 else
   echo "The folder $data_folder does NOT exist"
+  echo "create $data_folder..."
   mkdir -p "$data_folder"
+  echo "change $data_folder permissions..."
   chmod -R a+rwx "$data_folder"
 fi
 ```
