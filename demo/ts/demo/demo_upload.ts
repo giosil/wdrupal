@@ -2,56 +2,6 @@ namespace GUI {
 	
 	import WUtil = WUX.WUtil;
 
-	export class GUIUpload extends WUX.WComponent {
-
-		protected render() {
-			let r = '<h3 class="arpa-title">Upload File</h3><br>';
-			r += '<div id="divUpl">'
-			r += '<form id="frmUpl" action="/demo/upload" method="post" enctype="multipart/form-data">';
-			r += '<input type="file" name="datafile" id="datafile">';
-			r += '<input type="hidden" name="addtime" id="addtime" value="0">';
-			r += '<hr>'
-			r += '<input type="submit" value="Upload">';
-			r += '</form>';
-			r += '</div>';
-			return r;
-		}
-
-		protected componentDidMount(): void {
-			$("#frmUpl").on("submit", (e: JQueryEventObject) => {
-				e.preventDefault();
-
-				var file = ($("#datafile")[0] as any).files[0];
-				if(!file) {
-					WUX.showWarning('Select a file');
-					return;
-				}
-
-				var formData = new FormData();
-				formData.append("datafile", file);
-			
-				$.ajax({
-					url: "/demo/upload",
-					type: "POST",
-					data: formData,
-					processData: false,
-					contentType: false,
-					success: (response) => {
-						console.log('response:', response);
-						WUX.showSuccess('File uploaded.');
-						let fileName = WUX.WUtil.getString(response, "filename");
-						$("#divUpl").html('<p>File uploaded: ' + fileName + '</p>')
-					},
-					error: (jqXHR: JQueryXHR, textStatus: string, errorThrow: string) => {
-						console.error(textStatus);
-						console.error(errorThrow);
-						WUX.showError('Error during upload file.');
-					}
-				});
-			});
-		}
-	}
-
 	export class ListFiles extends WUX.WComponent<string, string[]> {
 		protected path: string;
 		protected rmurl: string;
@@ -160,20 +110,42 @@ namespace GUI {
 
 			frm.addEventListener("submit", (e: SubmitEvent) => {
 				e.preventDefault();
-				const xhr = new XMLHttpRequest();
-				xhr.open("POST", "/demo/upload", true);
-				xhr.onload = () => {
-					if (xhr.status == 200) {
-						console.log(xhr.responseText);
+
+				const data = new FormData(frm as HTMLFormElement);
+
+				$.ajax({
+					url: "/demo/upload",
+					type: "POST",
+					data: data,
+					processData: false,
+					contentType: false,
+					success: (response) => {
+						console.log('upload', response);
 						WUX.showSuccess('File caricato.');
 						this.load(this.path);
-					}
-					else {
+					},
+					error: (jqXHR: JQueryXHR, textStatus: string, errorThrow: string) => {
+						console.error(textStatus);
+						console.error(errorThrow);
 						WUX.showError('Errore durante l\'upload del file.');
 					}
-				};
-				const data = new FormData(frm as HTMLFormElement);
-				xhr.send(data);
+				});
+
+				// Send form data with XMLHttpRequest:
+				//
+				// const xhr = new XMLHttpRequest();
+				// xhr.open("POST", "/demo/upload", true);
+				// xhr.onload = () => {
+				// 	if (xhr.status == 200) {
+				// 		console.log(xhr.responseText);
+				// 		WUX.showSuccess('File caricato.');
+				// 		this.load(this.path);
+				// 	}
+				// 	else {
+				// 		WUX.showError('Errore durante l\'upload del file.');
+				// 	}
+				// };
+				// xhr.send(data);
 			});
 		}
 

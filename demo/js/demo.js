@@ -1023,56 +1023,6 @@ var GUI;
 var GUI;
 (function (GUI) {
     var WUtil = WUX.WUtil;
-    var GUIUpload = (function (_super) {
-        __extends(GUIUpload, _super);
-        function GUIUpload() {
-            return _super !== null && _super.apply(this, arguments) || this;
-        }
-        GUIUpload.prototype.render = function () {
-            var r = '<h3 class="arpa-title">Upload File</h3><br>';
-            r += '<div id="divUpl">';
-            r += '<form id="frmUpl" action="/demo/upload" method="post" enctype="multipart/form-data">';
-            r += '<input type="file" name="datafile" id="datafile">';
-            r += '<input type="hidden" name="addtime" id="addtime" value="0">';
-            r += '<hr>';
-            r += '<input type="submit" value="Upload">';
-            r += '</form>';
-            r += '</div>';
-            return r;
-        };
-        GUIUpload.prototype.componentDidMount = function () {
-            $("#frmUpl").on("submit", function (e) {
-                e.preventDefault();
-                var file = $("#datafile")[0].files[0];
-                if (!file) {
-                    WUX.showWarning('Select a file');
-                    return;
-                }
-                var formData = new FormData();
-                formData.append("datafile", file);
-                $.ajax({
-                    url: "/demo/upload",
-                    type: "POST",
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function (response) {
-                        console.log('response:', response);
-                        WUX.showSuccess('File uploaded.');
-                        var fileName = WUX.WUtil.getString(response, "filename");
-                        $("#divUpl").html('<p>File uploaded: ' + fileName + '</p>');
-                    },
-                    error: function (jqXHR, textStatus, errorThrow) {
-                        console.error(textStatus);
-                        console.error(errorThrow);
-                        WUX.showError('Error during upload file.');
-                    }
-                });
-            });
-        };
-        return GUIUpload;
-    }(WUX.WComponent));
-    GUI.GUIUpload = GUIUpload;
     var ListFiles = (function (_super) {
         __extends(ListFiles, _super);
         function ListFiles(id, classStyle, style, attributes) {
@@ -1187,20 +1137,24 @@ var GUI;
                 return;
             frm.addEventListener("submit", function (e) {
                 e.preventDefault();
-                var xhr = new XMLHttpRequest();
-                xhr.open("POST", "/demo/upload", true);
-                xhr.onload = function () {
-                    if (xhr.status == 200) {
-                        console.log(xhr.responseText);
+                var data = new FormData(frm);
+                $.ajax({
+                    url: "/demo/upload",
+                    type: "POST",
+                    data: data,
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        console.log('upload', response);
                         WUX.showSuccess('File caricato.');
                         _this.load(_this.path);
-                    }
-                    else {
+                    },
+                    error: function (jqXHR, textStatus, errorThrow) {
+                        console.error(textStatus);
+                        console.error(errorThrow);
                         WUX.showError('Errore durante l\'upload del file.');
                     }
-                };
-                var data = new FormData(frm);
-                xhr.send(data);
+                });
             });
         };
         ListFiles.prototype.getIcon = function (file) {

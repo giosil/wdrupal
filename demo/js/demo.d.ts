@@ -157,10 +157,6 @@ declare namespace GUI {
     export {};
 }
 declare namespace GUI {
-    class GUIUpload extends WUX.WComponent {
-        protected render(): string;
-        protected componentDidMount(): void;
-    }
     class ListFiles extends WUX.WComponent<string, string[]> {
         protected path: string;
         protected rmurl: string;
