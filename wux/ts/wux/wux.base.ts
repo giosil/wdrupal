@@ -2191,10 +2191,11 @@ namespace WUX {
         if (!after) after = '';
         let t = title ? ' title="' + title + '"' : '';
         cls = cls ? ' ' + cls : '';
+        let s = after ? ' style="margin-right:8px"' : '';
         if (icon.indexOf('.') > 0) return before + '<img src="' + icon + '"' + t + '>' + after;
-        if (!size || size < 2) return before + '<i class="fa ' + icon + cls + '"' + t + '></i>' + after;
+        if (!size || size < 2) return before + '<i class="fa ' + icon + cls + '"' + t + s + '></i>' + after;
         if (size > 5) size = 5;
-        return before + '<i class="fa ' + icon + ' fa-' + size + 'x' + cls + '"' + t + '></i>' + after;
+        return before + '<i class="fa ' + icon + ' fa-' + size + 'x' + cls + '"' + t + s + '></i>' + after;
     }
 
     export function build(tagName: string, inner?: string, css?: string | WStyle, attributes?: string | object, id?: string, classStyle?: string): string {
