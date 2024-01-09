@@ -25,6 +25,7 @@ declare namespace GUI {
         source: any[];
         series: Array<DevExpress.viz.ChartSeries>;
         labels: boolean;
+        rotated: boolean;
         xTitle: string;
         xRotate: number;
         yTitle: string;

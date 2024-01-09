@@ -44,6 +44,7 @@ namespace GUI {
 		source: any[];
 		series: Array<DevExpress.viz.ChartSeries>;
 		labels: boolean = false;
+		rotated: boolean = false;
 		xTitle: string;
 		xRotate: number;
 		yTitle: string;
@@ -169,7 +170,8 @@ namespace GUI {
 				},
 				tooltip: {
 					enabled: true,
-				}
+				},
+				rotated: this.rotated
 			};
 			if(this.palette) {
 				opt.palette = this.palette;
