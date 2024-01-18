@@ -40,10 +40,11 @@ namespace GUI {
 	export class Chart extends WUX.WComponent<CharType, ChartData> {
 		title: string;
 		subTitle: string;
-		palette: any
+		palette: any;
 		source: any[];
 		series: Array<DevExpress.viz.ChartSeries>;
 		labels: boolean = false;
+		legend: boolean = true;
 		rotated: boolean = false;
 		xTitle: string;
 		xRotate: number;
@@ -52,6 +53,7 @@ namespace GUI {
 		pSymbol: 'circle' | 'cross' | 'polygon' | 'square' | 'triangleDown' | 'triangleUp';
 		pSize: number;
 		pVisible: boolean;
+		color: string;
 
 		constructor(id?: string, type?: CharType, classStyle?: string, style?: string | WUX.WStyle, attributes?: string | object) {
 			super(id ? id : '*', 'Chart', type, classStyle, style, attributes);
@@ -164,6 +166,7 @@ namespace GUI {
 				legend: {
 					verticalAlignment: 'bottom',
 					horizontalAlignment: 'center',
+					visible: this.legend
 				},
 				export: {
 					enabled: true,
@@ -173,6 +176,9 @@ namespace GUI {
 				},
 				rotated: this.rotated
 			};
+			if(this.color) {
+				opt.commonSeriesSettings.color = this.color;
+			}
 			if(this.palette) {
 				opt.palette = this.palette;
 			}

@@ -28,6 +28,7 @@ var GUI;
         function Chart(id, type, classStyle, style, attributes) {
             var _this = _super.call(this, id ? id : '*', 'Chart', type, classStyle, style, attributes) || this;
             _this.labels = false;
+            _this.legend = true;
             _this.rotated = false;
             _this.forceOnChange = true;
             return _this;
@@ -137,6 +138,7 @@ var GUI;
                 legend: {
                     verticalAlignment: 'bottom',
                     horizontalAlignment: 'center',
+                    visible: this.legend
                 },
                 export: {
                     enabled: true,
@@ -146,6 +148,9 @@ var GUI;
                 },
                 rotated: this.rotated
             };
+            if (this.color) {
+                opt.commonSeriesSettings.color = this.color;
+            }
             if (this.palette) {
                 opt.palette = this.palette;
             }

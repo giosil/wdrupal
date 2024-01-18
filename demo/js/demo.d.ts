@@ -25,6 +25,7 @@ declare namespace GUI {
         source: any[];
         series: Array<DevExpress.viz.ChartSeries>;
         labels: boolean;
+        legend: boolean;
         rotated: boolean;
         xTitle: string;
         xRotate: number;
@@ -33,6 +34,7 @@ declare namespace GUI {
         pSymbol: 'circle' | 'cross' | 'polygon' | 'square' | 'triangleDown' | 'triangleUp';
         pSize: number;
         pVisible: boolean;
+        color: string;
         constructor(id?: string, type?: CharType, classStyle?: string, style?: string | WUX.WStyle, attributes?: string | object);
         protected updateState(nextState: ChartData): void;
         protected componentDidMount(): void;
