@@ -2335,13 +2335,14 @@ var WUX;
             after = '';
         var t = title ? ' title="' + title + '"' : '';
         cls = cls ? ' ' + cls : '';
+        var s = after ? ' style="margin-right:8px"' : '';
         if (icon.indexOf('.') > 0)
             return before + '<img src="' + icon + '"' + t + '>' + after;
         if (!size || size < 2)
-            return before + '<i class="fa ' + icon + cls + '"' + t + '></i>' + after;
+            return before + '<i class="fa ' + icon + cls + '"' + t + s + '></i>' + after;
         if (size > 5)
             size = 5;
-        return before + '<i class="fa ' + icon + ' fa-' + size + 'x' + cls + '"' + t + '></i>' + after;
+        return before + '<i class="fa ' + icon + ' fa-' + size + 'x' + cls + '"' + t + s + '></i>' + after;
     }
     WUX.buildIcon = buildIcon;
     function build(tagName, inner, css, attributes, id, classStyle) {
@@ -4689,7 +4690,7 @@ var WUX;
             for (var i = 0; i < this.tabs.length; i++) {
                 var tab = this.tabs[i];
                 if (i == this.state) {
-                    r += '<li class="active"><a data-toggle="tab" href="#' + this.id + '-' + i + '"> ' + tab.name + '</a></li>';
+                    r += '<li class="active"><a data-toggle="tab" class="active" href="#' + this.id + '-' + i + '" aria-expanded="true"> ' + tab.name + '</a></li>';
                 }
                 else {
                     r += '<li><a data-toggle="tab" href="#' + this.id + '-' + i + '"> ' + tab.name + '</a></li>';
