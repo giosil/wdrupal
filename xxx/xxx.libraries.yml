@@ -1,0 +1,7 @@
+xxx-ui:
+  version: '1.0.0'
+  css:
+    base:
+      css/xxx.css: { preprocess: false }
+  js:
+    js/xxx.js: { preprocess: false }

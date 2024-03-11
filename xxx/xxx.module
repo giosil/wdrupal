@@ -1,0 +1,28 @@
+<?php
+
+function xxx_install() {
+  \Drupal::logger('xxx')->notice('xxx_install...');
+}
+
+function xxx_uninstall() {
+  \Drupal::logger('xxx')->notice('xxx_uninstall...');
+}
+
+function xxx_cache_flush() {
+  // Richiamato da Configurazione / Sviluppo.Prestazioni / Svuota tutte le cache
+}
+
+function xxx_cron() {
+  // Richiamato da Cron
+}
+
+function xxx_preprocess_page(&$variables) {
+  
+  $req_uri = \Drupal::request()->getRequestUri();
+  if (str_starts_with($req_uri, '/xxx/')) {
+    $variables['#attached']['library'][] = 'xxx/xxx-ui';
+  }
+
+}
+
+?>

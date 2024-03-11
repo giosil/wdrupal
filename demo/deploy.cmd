@@ -26,5 +26,9 @@ echo Untar module...
 
 docker exec -w /opt/drupal/web/modules %DRUPAL_CONT_NAME% /bin/tar -xvf /opt/drupal/web/modules/demo.tar
 
+echo Delete tar...
+
+docker exec %DRUPAL_CONT_NAME% /bin/rm -fr /opt/drupal/web/modules/demo.tar
+
 rem start http://localhost:8090/demo/index
 rem start http://localhost:8090/demo/map

