@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # controllo data folder
+
 data_folder="/data01"
 if [ -d "$data_folder" ]; then
   echo "The folder $data_folder exist"
