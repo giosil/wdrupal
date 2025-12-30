@@ -1095,7 +1095,6 @@ var WUX;
             if (Array.isArray(a) && !a.length)
                 return true;
             if (typeof a == 'object') {
-                var r = 0;
                 for (var k in a)
                     if (a.hasOwnProperty(k))
                         return false;
@@ -6080,12 +6079,16 @@ var WUX;
                                     ch = 16;
                                 this.checkboxStyle = 'height:' + ch + 'px;';
                             }
+                            var ic = '<input type="checkbox" name="' + f.id + '" id="' + f.id + '" class="' + this.inputClass + '" ';
                             if (this.checkboxStyle.length > 2) {
-                                f.element = $('<input type="checkbox" name="' + f.id + '" id="' + f.id + '" class="' + this.inputClass + '" style="' + this.checkboxStyle + '"/>');
+                                ic += 'style="' + this.checkboxStyle + '" ';
                             }
-                            else {
-                                f.element = $('<input type="checkbox" name="' + f.id + '" id="' + f.id + '" class="' + this.inputClass + '"/>');
-                            }
+                            if (f.readonly)
+                                ic += 'readonly ';
+                            if (f.enabled == false)
+                                ic += 'disabled ';
+                            ic += '/>';
+                            f.element = $(ic);
                             break;
                         case WUX.WInputType.Radio:
                             if (f.component)
